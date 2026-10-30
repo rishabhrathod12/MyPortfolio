@@ -35,6 +35,10 @@ export type SkillIconKey =
   | 'pandas'
   | 'numpy'
   | 'scikit-learn'
+  | 'matplotlib'
+  | 'seaborn'
+  | 'tensorflow'
+  | 'fastapi'
 
 export interface Skill {
   id: string

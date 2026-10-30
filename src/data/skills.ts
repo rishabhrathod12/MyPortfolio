@@ -19,4 +19,8 @@ export const skills: readonly Skill[] = [
   { id: 'pandas', name: 'Pandas', icon: 'pandas' },
   { id: 'numpy', name: 'NumPy', icon: 'numpy' },
   { id: 'scikit-learn', name: 'Scikit-learn', icon: 'scikit-learn' },
+  { id: 'matplotlib', name: 'Matplotlib', icon: 'matplotlib' },
+  { id: 'seaborn', name: 'Seaborn', icon: 'seaborn' },
+  { id: 'tensorflow', name: 'TensorFlow', icon: 'tensorflow' },
+  { id: 'fastapi', name: 'FastAPI', icon: 'fastapi' },
 ]

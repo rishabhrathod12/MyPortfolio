@@ -6,7 +6,7 @@ test.describe('skills grid', () => {
   test('uses the expected number of columns for the viewport', async ({ page }, testInfo) => {
     await page.goto('/#skills')
     const cards = page.locator('#skills ul[aria-label="Technical skills"] > li')
-    await expect(cards).toHaveCount(14)
+    await expect(cards).toHaveCount(18)
     const lefts = await cards.evaluateAll((els) =>
       els.map((el) => Math.round(el.getBoundingClientRect().left)),
     )

@@ -25,7 +25,7 @@ describe('Skills section', () => {
     const list = screen.getByRole('list', { name: 'Technical skills' })
     const items = within(list).getAllByRole('listitem')
     expect(items.map((item) => item.textContent)).toEqual(skills.map((skill) => skill.name))
-    expect(items).toHaveLength(14)
+    expect(items).toHaveLength(18)
   })
 
   it('has dropped the old categories and unrelated technologies', () => {
@@ -41,7 +41,7 @@ describe('Skills section', () => {
     ]) {
       expect(screen.queryByText(old)).toBeNull()
     }
-    for (const unrelated of ['React', 'TypeScript', 'FastAPI', 'Tailwind', 'Docker', 'PostgreSQL']) {
+    for (const unrelated of ['React', 'TypeScript', 'Tailwind', 'Docker', 'PostgreSQL']) {
       expect(screen.queryByText(unrelated, { exact: false })).toBeNull()
     }
   })

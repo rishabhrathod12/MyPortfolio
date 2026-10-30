@@ -1,6 +1,8 @@
 import {
   BrainCircuit,
   Bot,
+  ChartLine,
+  ChartScatter,
   Database,
   FileSearch,
   MessageSquareText,
@@ -10,12 +12,14 @@ import {
 } from 'lucide-react'
 import type { ComponentType } from 'react'
 import {
+  siFastapi,
   siLangchain,
   siLanggraph,
   siNumpy,
   siPandas,
   siPython,
   siScikitlearn,
+  siTensorflow,
   type SimpleIcon,
 } from 'simple-icons'
 import type { SkillIconKey } from '@/types'
@@ -51,7 +55,9 @@ function glyph(Icon: ComponentType<{ className?: string; 'aria-hidden'?: boolean
 }
 
 /**
- * Logos only where the skill is a specific tool or language that has one. Concepts (machine learning,
+ * Logos only where the skill is a specific tool or language that has one in Simple Icons.
+ * Matplotlib and Seaborn have none there, so they get a plain chart glyph, not a lookalike.
+ * Concepts (machine learning,
  * RAG, prompt engineering...) and SQL, a language family, get a plain glyph instead of a borrowed logo.
  */
 export const skillIcons: Record<SkillIconKey, ComponentType<IconProps>> = {
@@ -61,6 +67,10 @@ export const skillIcons: Record<SkillIconKey, ComponentType<IconProps>> = {
   pandas: brandIcon(siPandas),
   numpy: brandIcon(siNumpy),
   'scikit-learn': brandIcon(siScikitlearn),
+  tensorflow: brandIcon(siTensorflow),
+  fastapi: brandIcon(siFastapi),
+  matplotlib: glyph(ChartLine),
+  seaborn: glyph(ChartScatter),
   'machine-learning': glyph(BrainCircuit),
   'deep-learning': glyph(Network),
   'generative-ai': glyph(Sparkles),

@@ -65,6 +65,10 @@ describe('profile', () => {
       'Pandas',
       'NumPy',
       'Scikit-learn',
+      'Matplotlib',
+      'Seaborn',
+      'TensorFlow',
+      'FastAPI',
     ])
     expect(new Set(skills.map((skill) => skill.id)).size).toBe(skills.length)
   })
