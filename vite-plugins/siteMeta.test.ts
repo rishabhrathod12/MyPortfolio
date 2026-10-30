@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { buildRobotsTxt, buildSitemapXml, injectSiteMeta, resolveSiteUrl } from './siteMeta'
+import {
+  OG_ALT,
+  buildRobotsTxt,
+  buildSitemapXml,
+  injectSiteMeta,
+  resolveSiteUrl,
+} from './siteMeta'
 
 const html =
   '<head>\n    <meta name="twitter:card" content="summary" />\n  </head><body></body>'
@@ -27,6 +33,14 @@ describe('resolveSiteUrl', () => {
 describe('injectSiteMeta', () => {
   it('leaves the html untouched when the site URL is unknown', () => {
     expect(injectSiteMeta(html, undefined)).toBe(html)
+  })
+
+  it('describes the share image with the current positioning', () => {
+    const out = injectSiteMeta(html, 'https://example.dev')
+    expect(out).toContain(`property="og:image:alt" content="${OG_ALT}"`)
+    for (const term of ['AI Engineer', 'Generative AI', 'Agentic AI', 'Machine Learning', 'Deep Learning']) {
+      expect(OG_ALT).toContain(term)
+    }
   })
 
   it('adds absolute canonical and social image tags when known', () => {

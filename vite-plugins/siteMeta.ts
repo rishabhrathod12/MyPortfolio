@@ -2,7 +2,9 @@ import type { Plugin } from 'vite'
 
 type Env = Record<string, string | undefined>
 
-const OG_ALT = 'Rishabh Rathod, AI Engineer | Generative AI | Agentic AI'
+/** Describes og-image.png, which shows the name and these focus areas. Keep in step with that image. */
+export const OG_ALT =
+  'Rishabh Rathod, AI Engineer. Generative AI, Agentic AI, Machine Learning, Deep Learning'
 
 /**
  * Works out the public site URL at build time. `SITE_URL` wins (custom domain); otherwise Vercel's

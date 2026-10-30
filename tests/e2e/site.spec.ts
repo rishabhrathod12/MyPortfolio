@@ -186,10 +186,13 @@ test.describe('accessibility', () => {
     expect(summary).toEqual([])
   })
 
-  test('respects reduced motion: content is visible without animation', async ({ browser }) => {
-    const context = await browser.newContext({ reducedMotion: 'reduce' })
+  test('respects reduced motion: content is visible without animation', async ({
+    browser,
+    baseURL,
+  }) => {
+    const context = await browser.newContext({ reducedMotion: 'reduce', baseURL })
     const page = await context.newPage()
-    await page.goto('http://localhost:4173/')
+    await page.goto('/')
     await page.evaluate(() => document.getElementById('contact')?.scrollIntoView())
     await expect(page.getByRole('heading', { name: 'Get in touch' })).toBeVisible()
     await context.close()
