@@ -9,13 +9,13 @@ import { profile } from '@/data/profile'
 
 function Fact({ icon, label, value }: { icon: ReactNode; label: string; value: string }) {
   return (
-    <div className="flex items-start gap-3">
+    <li className="flex items-start gap-3">
       <span className="mt-0.5 text-accent-cyan">{icon}</span>
       <div>
-        <dt className="text-xs uppercase tracking-wider text-slate-500">{label}</dt>
-        <dd className="text-sm text-slate-200">{value}</dd>
+        <span className="block text-xs uppercase tracking-wider text-slate-400">{label}</span>
+        <span className="block text-sm text-slate-200">{value}</span>
       </div>
-    </div>
+    </li>
   )
 }
 
@@ -33,7 +33,7 @@ export function About() {
         <Reveal>
           <GlassCard>
             <h3 className="mb-4 text-sm font-semibold text-white">At a glance</h3>
-            <dl className="space-y-4">
+            <ul className="space-y-4">
               <Fact icon={<MapPin size={16} aria-hidden="true" />} label="Location" value={profile.location} />
               <Fact
                 icon={<Sparkles size={16} aria-hidden="true" />}
@@ -54,7 +54,7 @@ export function About() {
                   value={`${degree.degree}, ${degree.dates.display}`}
                 />
               )}
-            </dl>
+            </ul>
           </GlassCard>
         </Reveal>
       </div>

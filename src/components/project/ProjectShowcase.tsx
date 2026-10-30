@@ -54,7 +54,7 @@ export function ProjectShowcase({ project }: { project: Project }) {
                 Live demo <ExternalLink size={16} aria-hidden="true" />
               </Button>
             )}
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-400">
               Repository last reviewed against this page on {formatIsoDate(project.lastReviewed)}.
             </p>
           </div>
@@ -85,7 +85,7 @@ export function ProjectShowcase({ project }: { project: Project }) {
           <dl className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {project.stack.map((group) => (
               <div key={group.label}>
-                <dt className="mb-2 text-xs uppercase tracking-wider text-slate-500">
+                <dt className="mb-2 text-xs uppercase tracking-wider text-slate-400">
                   {group.label}
                 </dt>
                 <dd>

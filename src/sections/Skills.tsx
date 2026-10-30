@@ -19,7 +19,7 @@ export function Skills() {
                       &#8250;
                     </span>
                     {item.name}
-                    {item.note && <span className="block pl-4 text-xs text-slate-500">{item.note}</span>}
+                    {item.note && <span className="block pl-4 text-xs text-slate-400">{item.note}</span>}
                   </li>
                 ))}
               </ul>

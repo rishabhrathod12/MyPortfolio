@@ -21,7 +21,7 @@ export function Learning() {
             </ul>
           </div>
           <p className="text-sm text-slate-400">{learning.applied}</p>
-          <p className="border-t border-white/10 pt-4 text-sm text-slate-500">{learning.disclaimer}</p>
+          <p className="border-t border-white/10 pt-4 text-sm text-slate-400">{learning.disclaimer}</p>
         </GlassCard>
       </Reveal>
     </Section>
