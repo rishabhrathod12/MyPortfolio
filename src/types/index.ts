@@ -15,19 +15,31 @@ export interface Profile {
   location: string
   heroIntro: string
   aboutParagraphs: readonly string[]
+  /** Meaningful alternative text for the portrait shown in the About section. */
+  photoAlt: string
 }
 
-export interface SkillItem {
-  name: string
-  /** Honest qualifier shown next to the skill, e.g. where it was applied or its current limits. */
-  note?: string
-}
+/** Keys of the icons the Skills section can draw. The drawing lives in components/icons/skillIcons.tsx. */
+export type SkillIconKey =
+  | 'python'
+  | 'machine-learning'
+  | 'deep-learning'
+  | 'generative-ai'
+  | 'agentic-ai'
+  | 'llm'
+  | 'langchain'
+  | 'langgraph'
+  | 'prompt-engineering'
+  | 'rag'
+  | 'sql'
+  | 'pandas'
+  | 'numpy'
+  | 'scikit-learn'
 
-export interface SkillGroup {
+export interface Skill {
   id: string
-  title: string
-  description: string
-  items: readonly SkillItem[]
+  name: string
+  icon: SkillIconKey
 }
 
 /** Dates are ISO year-month so they can be sorted and validated; `display` is what the UI shows. */

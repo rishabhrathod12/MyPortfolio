@@ -5,7 +5,6 @@ import { education } from '@/data/education'
 import { experience } from '@/data/experience'
 import { learning } from '@/data/learning'
 import { navItems } from '@/data/nav'
-import { skillGroups } from '@/data/skills'
 
 describe('App', () => {
   it('renders the site owner name as the single main heading', () => {
@@ -63,15 +62,14 @@ describe('content sections', () => {
     expect(screen.getByText('At a glance')).toBeInTheDocument()
   })
 
-  it('renders every skill group and skill', () => {
+  it('shows the profile photo with meaningful alt text in the About section', () => {
     render(<App />)
-    const skills = screen.getByRole('region', { name: 'Technical skills' })
-    for (const group of skillGroups) {
-      expect(within(skills).getByRole('heading', { name: group.title })).toBeInTheDocument()
-      for (const item of group.items) {
-        expect(within(skills).getAllByText(item.name, { exact: false }).length).toBeGreaterThan(0)
-      }
-    }
+    const about = screen.getByRole('region', { name: 'About' })
+    const photo = within(about).getByRole('img', { name: profile.photoAlt })
+    expect(photo).toHaveAttribute('src')
+    expect(photo.getAttribute('src')).toMatch(/profile.*.jpg/)
+    expect(photo).toHaveAttribute('width', '600')
+    expect(photo).toHaveAttribute('height', '600')
   })
 
   it('renders the Amazon experience with its dates and highlights', () => {

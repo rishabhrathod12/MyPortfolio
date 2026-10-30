@@ -4,12 +4,12 @@ import { experience } from './experience'
 import { learning } from './learning'
 import { navItems } from './nav'
 import { projects } from './projects'
-import { skillGroups } from './skills'
+import { skills } from './skills'
 
 const allText = JSON.stringify({
   profile,
   contact,
-  skillGroups,
+  skills,
   experience,
   education,
   learning,
@@ -47,10 +47,24 @@ describe('profile', () => {
     expect(allText).not.toMatch(/mailto:/i)
   })
 
-  it('has no skill group without items and no duplicate skill names', () => {
-    const names = skillGroups.flatMap((group) => group.items.map((item) => item.name))
-    expect(new Set(names).size).toBe(names.length)
-    for (const group of skillGroups) expect(group.items.length).toBeGreaterThan(0)
+  it('lists exactly the approved skills, in order, with no duplicates', () => {
+    expect(skills.map((skill) => skill.name)).toEqual([
+      'Python',
+      'Machine Learning',
+      'Deep Learning',
+      'Generative AI',
+      'Agentic AI',
+      'Large Language Models (LLMs)',
+      'LangChain',
+      'LangGraph',
+      'Prompt Engineering',
+      'Retrieval-Augmented Generation (RAG)',
+      'SQL',
+      'Pandas',
+      'NumPy',
+      'Scikit-learn',
+    ])
+    expect(new Set(skills.map((skill) => skill.id)).size).toBe(skills.length)
   })
 })
 

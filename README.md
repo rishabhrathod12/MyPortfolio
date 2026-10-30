@@ -36,7 +36,7 @@ All copy lives in `src/data/`, separate from the components. Edit data, not JSX.
 | File | Content |
 |---|---|
 | `profile.ts` | Name, title, location, hero intro, About text, contact message, social links |
-| `skills.ts` | Skill groups |
+| `skills.ts` | The approved skill list (name and icon key) |
 | `experience.ts` | Professional experience |
 | `education.ts` | Education |
 | `learning.ts` | Self-directed learning |
@@ -58,9 +58,12 @@ That repository changes quickly. Before changing a feature status in `projects.t
 `docs/PROJECT_CONTEXT.md` and recent commits, then update `lastReviewed`. Only mark something `implemented`
 when the repository says it is built and tested. Add `demoUrl` only when a public demo exists.
 
+### Profile photo
+
+The portrait is `src/assets/profile.jpg` (600 x 600, shown in the About section; alt text is `photoAlt` in `profile.ts`). To change it, replace that file with a square, metadata-free image. Crop out event badges, QR codes and backgrounds before publishing. Originals dropped in the project root (`my_picture*`) are git-ignored.
+
 ### Not added yet
 
-- **Profile photo:** add the image to `src/assets/`, then use it in `src/sections/About.tsx` with meaningful `alt` text.
 - **Resume:** put the PDF in `public/` (for example `public/Rishabh-Rathod-Resume.pdf`) and add a link in the hero and contact sections.
 - **Public email:** deliberately not shown. Add it to `contact` in `profile.ts` and render a `mailto:` link if you change your mind.
 

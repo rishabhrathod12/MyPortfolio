@@ -6,6 +6,7 @@ export const profile: Profile = {
   location: 'India',
   heroIntro:
     'I build AI applications with a focus on generative and agentic systems. I taught myself Python, machine learning and deep learning after seven years running my own e-commerce business.',
+  photoAlt: 'Portrait of Rishabh Rathod',
   aboutParagraphs: [
     'I am an AI engineer based in India. For seven years I ran my own Amazon seller business, where I learned product research, marketplace operations and advertising by doing the work.',
     'In parallel, I taught myself Python, machine learning, deep learning, generative AI and agentic AI through free online resources, primarily YouTube. I applied that learning in TravelMate AI, an agentic travel planner that I am building in the open on GitHub.',
