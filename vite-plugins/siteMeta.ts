@@ -47,18 +47,26 @@ export function buildRobotsTxt(siteUrl: string | undefined): string {
   return `${lines.join('\n')}\n`
 }
 
-export function buildSitemapXml(siteUrl: string, lastmod: string): string {
+export function buildSitemapXml(
+  siteUrl: string,
+  lastmod: string,
+  paths: readonly string[] = ['/'],
+): string {
+  const urls = paths
+    .map(
+      (path) =>
+        `  <url>\n    <loc>${siteUrl}${path}</loc>\n    <lastmod>${lastmod}</lastmod>\n  </url>`,
+    )
+    .join('\n')
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>${siteUrl}/</loc>
-    <lastmod>${lastmod}</lastmod>
-  </url>
+${urls}
 </urlset>
 `
 }
 
-export function siteMetaPlugin(env: Env = process.env): Plugin {
+/** `paths` are the page paths listed in the sitemap, for example ['/', '/projects/travelmate-ai']. */
+export function siteMetaPlugin(env: Env = process.env, paths: readonly string[] = ['/']): Plugin {
   const siteUrl = resolveSiteUrl(env)
   return {
     name: 'site-meta',
@@ -73,7 +81,7 @@ export function siteMetaPlugin(env: Env = process.env): Plugin {
         this.emitFile({
           type: 'asset',
           fileName: 'sitemap.xml',
-          source: buildSitemapXml(siteUrl, lastmod),
+          source: buildSitemapXml(siteUrl, lastmod, paths),
         })
       }
     },

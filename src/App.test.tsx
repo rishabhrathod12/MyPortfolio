@@ -1,10 +1,19 @@
 import { render, screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import App from './App'
 import { contact, profile, socialLinks } from '@/data/profile'
 import { education } from '@/data/education'
 import { experience } from '@/data/experience'
-import { learning } from '@/data/learning'
+import { focus } from '@/data/focus'
 import { navItems } from '@/data/nav'
+import { projects } from '@/data/projects'
+
+const project = projects[0]!
+
+beforeEach(() => {
+  window.history.replaceState(null, '', '/')
+  document.title = 'Rishabh Rathod | AI Engineer'
+})
 
 describe('App', () => {
   it('renders the site owner name as the single main heading', () => {
@@ -18,6 +27,22 @@ describe('App', () => {
     for (const item of navItems) {
       expect(container.querySelector(`section#${item.id}`)).not.toBeNull()
     }
+  })
+
+  it('orders the page: identity, skills, projects, introduction, focus, experience, education, contact', () => {
+    const { container } = render(<App />)
+    const ids = Array.from(container.querySelectorAll('main > section')).map((section) => section.id)
+    expect(ids).toEqual([
+      'top',
+      'skills',
+      'projects',
+      'about',
+      'focus',
+      'experience',
+      'education',
+      'contact',
+    ])
+    expect(navItems.map((item) => item.id)).toEqual(ids.slice(1))
   })
 
   it('offers a skip link to the main content', () => {
@@ -72,16 +97,23 @@ describe('content sections', () => {
     expect(photo).toHaveAttribute('height', '600')
   })
 
-  it('renders the Amazon experience with its dates and highlights', () => {
+  it('renders the technical focus topics under the new heading', () => {
     render(<App />)
-    const section = screen.getByRole('region', { name: 'Professional experience' })
+    const section = screen.getByRole('region', { name: 'Technical Focus & Areas of Interest' })
+    const items = within(section).getAllByRole('listitem')
+    expect(items.map((item) => item.textContent)).toEqual(focus.topics.map((topic) => topic.name))
+    expect(screen.queryByText(/self-directed/i)).toBeNull()
+  })
+
+  it('keeps the Amazon experience short: title, dates and one sentence', () => {
+    render(<App />)
+    const section = screen.getByRole('region', { name: 'Professional Experience' })
     for (const entry of experience) {
       expect(within(section).getByRole('heading', { name: entry.role })).toBeInTheDocument()
       expect(within(section).getByText(entry.dates.display)).toBeInTheDocument()
-      for (const highlight of entry.highlights) {
-        expect(within(section).getByText(highlight)).toBeInTheDocument()
-      }
+      expect(within(section).getByText(entry.summary)).toBeInTheDocument()
     }
+    expect(within(section).queryAllByRole('listitem')).toHaveLength(experience.length)
   })
 
   it('renders the education entry', () => {
@@ -91,15 +123,6 @@ describe('content sections', () => {
       expect(within(section).getByRole('heading', { name: entry.degree })).toBeInTheDocument()
       expect(within(section).getByText(entry.institution)).toBeInTheDocument()
       expect(within(section).getByText(entry.dates.display)).toBeInTheDocument()
-    }
-  })
-
-  it('renders the self-directed learning disclaimer', () => {
-    render(<App />)
-    const section = screen.getByRole('region', { name: learning.heading })
-    expect(within(section).getByText(learning.disclaimer)).toBeInTheDocument()
-    for (const topic of learning.topics) {
-      expect(within(section).getByText(topic.name)).toBeInTheDocument()
     }
   })
 
@@ -117,7 +140,67 @@ describe('content sections', () => {
   it('has no empty links', () => {
     const { container } = render(<App />)
     for (const anchor of container.querySelectorAll('a')) {
-      expect(anchor.getAttribute('href')).toMatch(/^(#\S+|https:\/\/\S+)$/)
+      expect(anchor.getAttribute('href')).toMatch(/^(#\S+|\/projects\/\S+|https:\/\/\S+)$/)
     }
+  })
+})
+
+describe('project navigation', () => {
+  it('keeps project detail off the main page', () => {
+    render(<App />)
+    const section = screen.getByRole('region', { name: 'Featured Projects' })
+    for (const heading of ['Key Features', 'Technology Stack', 'Architecture Overview']) {
+      expect(screen.queryByRole('heading', { name: heading })).toBeNull()
+    }
+    for (const feature of project.features) {
+      expect(within(section).queryByText(feature.title)).toBeNull()
+    }
+    for (const layer of project.architecture) {
+      expect(within(section).queryByText(layer.name)).toBeNull()
+    }
+  })
+
+  it('opens the project details page from the card and returns with the back link', async () => {
+    const user = userEvent.setup()
+    render(<App />)
+
+    await user.click(screen.getByRole('link', { name: `View Details: ${project.name}` }))
+
+    expect(window.location.pathname).toBe(`/projects/${project.id}`)
+    expect(screen.getByRole('heading', { level: 1, name: project.name })).toBeInTheDocument()
+    expect(screen.queryByRole('region', { name: 'Introduction' })).toBeNull()
+    expect(document.title).toBe(`${project.name} | Rishabh Rathod`)
+    expect(screen.getByRole('heading', { level: 1, name: project.name })).toHaveFocus()
+
+    await user.click(screen.getByRole('link', { name: /Back to projects/ }))
+
+    expect(window.location.pathname).toBe('/')
+    expect(window.location.hash).toBe('#projects')
+    expect(screen.getByRole('heading', { level: 1, name: profile.name })).toBeInTheDocument()
+    expect(document.title).toBe('Rishabh Rathod | AI Engineer')
+  })
+
+  it('points the navbar at home-page sections while on a detail page', async () => {
+    const user = userEvent.setup()
+    render(<App />)
+    await user.click(screen.getByRole('link', { name: `View Details: ${project.name}` }))
+
+    const nav = screen.getByRole('navigation', { name: 'Primary' })
+    for (const item of navItems) {
+      expect(nav.querySelector(`a[href="/#${item.id}"]`)).not.toBeNull()
+    }
+  })
+
+  it('shows a not-found page for an unknown address', () => {
+    window.history.replaceState(null, '', '/projects/does-not-exist')
+    render(<App />)
+    expect(screen.getByRole('heading', { level: 1, name: 'Page not found' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Back to the portfolio' })).toHaveAttribute('href', '/')
+  })
+
+  it('opens a project details page directly from its address', () => {
+    window.history.replaceState(null, '', `/projects/${project.id}`)
+    render(<App />)
+    expect(screen.getByRole('heading', { level: 1, name: project.name })).toBeInTheDocument()
   })
 })

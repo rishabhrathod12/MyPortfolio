@@ -26,6 +26,29 @@ describe('projects data', () => {
     }
   })
 
+  it('has what the main-page card needs, kept short', () => {
+    for (const project of projects) {
+      expect(project.shortDescription.length).toBeGreaterThan(20)
+      expect(project.shortDescription.length).toBeLessThanOrEqual(220)
+      expect(project.highlights.length).toBeGreaterThan(0)
+      expect(project.highlights.length).toBeLessThanOrEqual(5)
+      expect(project.coverAlt.length).toBeGreaterThan(10)
+      expect(project.id).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/)
+    }
+  })
+
+  it('says on the card that the project is in development and on mock data', () => {
+    expect(travelmate?.shortDescription).toMatch(/in active development/i)
+    expect(travelmate?.shortDescription).toMatch(/mock data/i)
+  })
+
+  it('defines what every status means', () => {
+    for (const status of ['implemented', 'prototype', 'planned'] as const) {
+      expect(travelmate?.statusNotes[status].length).toBeGreaterThan(20)
+    }
+    expect(travelmate?.statusNotes.implemented).toMatch(/mock/i)
+  })
+
   it('has unique feature and architecture ids', () => {
     for (const project of projects) {
       const featureIds = project.features.map((item) => item.id)

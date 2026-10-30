@@ -45,6 +45,15 @@ describe('robots and sitemap', () => {
     expect(buildRobotsTxt('https://example.dev')).toContain('Sitemap: https://example.dev/sitemap.xml')
   })
 
+  it('lists project pages in the sitemap', () => {
+    const xml = buildSitemapXml('https://example.dev', '2026-10-30', [
+      '/',
+      '/projects/travelmate-ai',
+    ])
+    expect(xml).toContain('<loc>https://example.dev/</loc>')
+    expect(xml).toContain('<loc>https://example.dev/projects/travelmate-ai</loc>')
+  })
+
   it('builds a one-page sitemap', () => {
     const xml = buildSitemapXml('https://example.dev', '2026-10-30')
     expect(xml).toContain('<loc>https://example.dev/</loc>')

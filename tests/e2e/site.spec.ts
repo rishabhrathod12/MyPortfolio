@@ -1,15 +1,7 @@
 import AxeBuilder from '@axe-core/playwright'
 import { expect, test, type Page } from '@playwright/test'
 
-const SECTION_IDS = [
-  'about',
-  'skills',
-  'projects',
-  'experience',
-  'education',
-  'learning',
-  'contact',
-]
+const SECTION_IDS = ['skills', 'projects', 'about', 'focus', 'experience', 'education', 'contact']
 
 /** Scrolls the whole page so every scroll-reveal has played, then returns to the top. */
 async function revealEverything(page: Page) {
@@ -41,7 +33,7 @@ test.describe('page health', () => {
   test('has the expected title, description and a single h1', async ({ page }) => {
     await page.goto('/')
     await expect(page).toHaveTitle(/Rishabh Rathod/)
-    await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /AI engineer/)
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /AI Engineer/)
     await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1)
   })
 
@@ -161,8 +153,10 @@ test.describe('links and content', () => {
         expect(link.target).toBe('_blank')
         expect(link.rel).toContain('noopener')
       } else {
-        expect(link.href).toMatch(/^#\S+$/)
-        await expect(page.locator(link.href === '#top' ? 'section#top' : link.href)).toHaveCount(1)
+        expect(link.href).toMatch(/^(#\S+|\/projects\/[a-z0-9-]+)$/)
+        if (link.href.startsWith('#')) {
+          await expect(page.locator(link.href === '#top' ? 'section#top' : link.href)).toHaveCount(1)
+        }
       }
     }
   })

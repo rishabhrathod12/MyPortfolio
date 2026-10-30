@@ -1,11 +1,9 @@
-import { Briefcase, GraduationCap, MapPin, Sparkles } from 'lucide-react'
+import { Briefcase, MapPin, Sparkles } from 'lucide-react'
 import type { ReactNode } from 'react'
 import profilePhoto from '@/assets/profile.jpg'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { Reveal } from '@/components/ui/Reveal'
 import { Section } from '@/components/ui/Section'
-import { education } from '@/data/education'
-import { experience } from '@/data/experience'
 import { profile } from '@/data/profile'
 
 function Fact({ icon, label, value }: { icon: ReactNode; label: string; value: string }) {
@@ -21,10 +19,8 @@ function Fact({ icon, label, value }: { icon: ReactNode; label: string; value: s
 }
 
 export function About() {
-  const job = experience[0]
-  const degree = education[0]
   return (
-    <Section id="about" title="About" eyebrow="Who I am">
+    <Section id="about" title="About" eyebrow="Professional introduction">
       <div className="grid gap-8 lg:grid-cols-3">
         <Reveal className="order-2 space-y-4 text-base leading-relaxed text-slate-300 lg:order-1 lg:col-span-2">
           {profile.aboutParagraphs.map((paragraph) => (
@@ -50,20 +46,11 @@ export function About() {
                 label="Focus"
                 value="Generative AI and agentic AI"
               />
-              {job && (
-                <Fact
-                  icon={<Briefcase size={16} aria-hidden="true" />}
-                  label="Background"
-                  value={`${job.role}, ${job.dates.display}`}
-                />
-              )}
-              {degree && (
-                <Fact
-                  icon={<GraduationCap size={16} aria-hidden="true" />}
-                  label="Education"
-                  value={`${degree.degree}, ${degree.dates.display}`}
-                />
-              )}
+              <Fact
+                icon={<Briefcase size={16} aria-hidden="true" />}
+                label="Background"
+                value="Entrepreneurship"
+              />
             </ul>
           </GlassCard>
         </Reveal>

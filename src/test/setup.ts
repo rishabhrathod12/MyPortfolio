@@ -14,3 +14,7 @@ class IntersectionObserverStub implements IntersectionObserver {
 }
 
 globalThis.IntersectionObserver = IntersectionObserverStub
+
+// jsdom does not implement scrolling; real scrolling is covered by the Playwright tests.
+Element.prototype.scrollIntoView = () => {}
+window.scrollTo = () => {}

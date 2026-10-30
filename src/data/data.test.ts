@@ -1,7 +1,7 @@
 import { contact, profile, socialLinks } from './profile'
 import { education } from './education'
 import { experience } from './experience'
-import { learning } from './learning'
+import { focus } from './focus'
 import { navItems } from './nav'
 import { projects } from './projects'
 import { skills } from './skills'
@@ -12,7 +12,7 @@ const allText = JSON.stringify({
   skills,
   experience,
   education,
-  learning,
+  focus,
   projects,
 })
 
@@ -38,7 +38,9 @@ describe('navigation and links', () => {
 describe('profile', () => {
   it('has the agreed identity', () => {
     expect(profile.name).toBe('Rishabh Rathod')
-    expect(profile.title).toBe('AI Engineer | Generative AI | Agentic AI')
+    expect(profile.title).toBe(
+      'AI Engineer | Generative AI | Agentic AI | Machine Learning | Deep Learning',
+    )
     expect(profile.location).toBe('India')
   })
 
@@ -69,11 +71,17 @@ describe('profile', () => {
 })
 
 describe('honest background', () => {
-  it('lists the Amazon business with the agreed dates', () => {
+  it('keeps the Amazon business brief, with the agreed title and dates', () => {
     const entry = experience[0]
     expect(experience).toHaveLength(1)
-    expect(entry?.dates.display).toBe('April 2019 – March 2026')
-    expect(entry?.category).toBe('Toys')
+    expect(entry?.role).toBe('Amazon Seller / E-commerce Entrepreneur')
+    expect(entry?.dates.display).toBe('March 2019 – March 2026')
+    expect(entry?.summary).toBe(
+      'Managed an Amazon Seller business, gaining practical experience in product research, marketplace operations, advertising, and business management.',
+    )
+    expect(Object.keys(entry ?? {}).sort()).toEqual(
+      ['dates', 'id', 'organization', 'role', 'summary'].sort(),
+    )
   })
 
   it('shows only the B.Tech with the agreed institution and years, without a branch', () => {
@@ -87,21 +95,35 @@ describe('honest background', () => {
     )
   })
 
-  it('describes AI knowledge as self-directed learning from YouTube', () => {
-    expect(learning.sources).toMatch(/YouTube/)
-    expect(learning.disclaimer).toMatch(/not a formal course or certification/)
-    expect(learning.topics.map((topic) => topic.name)).toEqual([
-      'Python',
-      'Machine learning',
-      'Deep learning',
+  it('shows the technical focus topics under the agreed heading', () => {
+    expect(focus.heading).toBe('Technical Focus & Areas of Interest')
+    expect(focus.topics.map((topic) => topic.name)).toEqual([
+      'Machine Learning',
+      'Deep Learning',
       'Generative AI',
+      'Large Language Models (LLMs)',
       'Agentic AI',
+      'AI Agents',
+      'Intelligent Workflow Automation',
     ])
   })
 
+  it('positions the owner as an AI Engineer, not a learner', () => {
+    expect(allText).not.toMatch(
+      /youtube|self-taught|self-directed|aspiring|taught myself|student|course|institute|learning journey/i,
+    )
+  })
+
+  it('keeps the About text as specified and the Amazon business out of it', () => {
+    expect(profile.aboutParagraphs).toHaveLength(4)
+    expect(profile.aboutParagraphs[0]).toBe(
+      'I am an AI Engineer focused on building intelligent applications using Generative AI, Large Language Models, and Agentic AI.',
+    )
+    expect(profile.aboutParagraphs.join(' ')).not.toMatch(/amazon|seller|e-commerce/i)
+  })
+
   it('does not claim certifications, AI employment or revenue figures', () => {
-    const withoutDisclaimer = allText.replace(learning.disclaimer, '')
-    expect(withoutDisclaimer).not.toMatch(/certified|certificate|certification/i)
+    expect(allText).not.toMatch(/certified|certificate|certification/i)
     expect(allText).not.toMatch(/[$₹]\s?\d|\d+\s?(%|crore|lakh)|revenue|sales of/i)
     expect(experience.map((entry) => entry.organization).join(' ')).not.toMatch(/AI/)
   })

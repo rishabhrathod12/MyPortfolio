@@ -8,7 +8,8 @@
     "types": ["node"],
     "strict": true,
     "skipLibCheck": true,
-    "noEmit": true
+    "noEmit": true,
+    "paths": { "@/*": ["./src/*"] }
   },
-  "include": ["vite.config.ts", "vite-plugins"]
+  "include": ["vite.config.ts", "vite-plugins", "src/data/projects.ts", "src/types/index.ts"]
 }

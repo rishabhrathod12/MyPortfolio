@@ -10,6 +10,11 @@ export const projects: readonly Project[] = [
     id: 'travelmate-ai',
     name: 'TravelMate AI',
     tagline: 'An agentic AI travel planner, built to be testable and honest about its data.',
+    shortDescription:
+      'An agentic AI travel planner that researches transport, hotels and weather, drafts an itinerary and estimates cost. In active development, running on mock data.',
+    highlights: ['Python', 'FastAPI', 'LangGraph', 'React'],
+    coverAlt:
+      'TravelMate AI cover artwork showing its planning workflow: intake, research, select, itinerary, cost and summary.',
     overview:
       'TravelMate AI plans trips by researching transport, hotels and weather, drafting an itinerary and estimating cost. It is built around guardrails: every value carries a label saying where it came from, money is handled in integer minor units, and booking is disabled by design. The first scenario is Indore to Goa.',
     problem:
@@ -154,6 +159,13 @@ export const projects: readonly Project[] = [
         status: 'implemented',
       },
     ],
+    statusNotes: {
+      implemented:
+        'Built and covered by automated tests in the repository. Travel data comes from mock providers and the AI model is a test double, so none of it runs on live data.',
+      prototype:
+        'Working but unfinished: it runs on demo data or a labelled development stand-in, not on a live AI model.',
+      planned: 'Not built yet. Listed so the roadmap is visible, not as a claim.',
+    },
     limitations: [
       'No live AI model call has ever been made.',
       'All travel data is mock data with fictional names.',

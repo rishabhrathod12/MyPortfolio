@@ -1,7 +1,6 @@
 import { render, screen, within } from '@testing-library/react'
 import { LazyMotion, domAnimation } from 'motion/react'
 import { projects } from '@/data/projects'
-import { formatIsoDate } from '@/lib/format'
 import { Projects } from './Projects'
 
 function renderProjects() {
@@ -14,79 +13,55 @@ function renderProjects() {
 
 const project = projects[0]!
 
-describe('Projects section', () => {
-  it('shows the TravelMate AI project with its tagline and current state', () => {
+describe('Projects section (cards only)', () => {
+  it('has the Featured Projects heading and one card per project', () => {
     renderProjects()
-    expect(screen.getByRole('heading', { name: project.name })).toBeInTheDocument()
-    expect(screen.getByText(project.tagline)).toBeInTheDocument()
-    expect(screen.getByText(project.currentState, { exact: false })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 2, name: 'Featured Projects' })).toBeInTheDocument()
+    expect(screen.getAllByRole('article')).toHaveLength(projects.length)
   })
 
-  it('links to the GitHub repository in a new tab', () => {
+  it('shows the name, cover image, short description and technology highlights', () => {
     renderProjects()
-    const link = screen.getByRole('link', { name: /TravelMate AI on GitHub/ })
-    expect(link).toHaveAttribute('href', project.repoUrl)
-    expect(link).toHaveAttribute('target', '_blank')
-    expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+    const card = screen.getByRole('article', { name: project.name })
+    expect(within(card).getByRole('heading', { level: 3, name: project.name })).toBeInTheDocument()
+    expect(within(card).getByRole('img', { name: project.coverAlt })).toHaveAttribute('src')
+    expect(within(card).getByText(project.shortDescription)).toBeInTheDocument()
+    const highlights = within(
+      within(card).getByRole('list', { name: 'Technology highlights' }),
+    ).getAllByRole('listitem')
+    expect(highlights.map((item) => item.textContent)).toEqual(project.highlights)
   })
 
-  it('does not render a demo button because no demo exists', () => {
+  it('has a View Details link to the project page and a safe GitHub link', () => {
+    renderProjects()
+    const card = screen.getByRole('article', { name: project.name })
+    expect(within(card).getByRole('link', { name: `View Details: ${project.name}` })).toHaveAttribute(
+      'href',
+      `/projects/${project.id}`,
+    )
+    const github = within(card).getByRole('link', { name: `${project.name} on GitHub (opens in a new tab)` })
+    expect(github).toHaveAttribute('href', project.repoUrl)
+    expect(github).toHaveAttribute('target', '_blank')
+    expect(github).toHaveAttribute('rel', 'noopener noreferrer')
+  })
+
+  it('contains only card content: no features, stack, architecture or status badges', () => {
+    renderProjects()
+    const section = screen.getByRole('article', { name: project.name })
+    for (const feature of project.features) {
+      expect(within(section).queryByText(feature.title)).toBeNull()
+    }
+    for (const layer of project.architecture) {
+      expect(within(section).queryByText(layer.name)).toBeNull()
+    }
+    for (const word of ['Implemented', 'Prototype', 'Planned', 'Architecture', 'Key Features']) {
+      expect(within(section).queryByText(word)).toBeNull()
+    }
+    expect(within(section).getAllByRole('link')).toHaveLength(2)
+  })
+
+  it('does not render a demo link because no demo exists', () => {
     renderProjects()
     expect(screen.queryByRole('link', { name: /demo/i })).toBeNull()
-  })
-
-  it('renders overview, problem, features, stack, architecture and limitations', () => {
-    renderProjects()
-    for (const title of [
-      'Overview',
-      'The problem',
-      'Key features',
-      'Technology stack',
-      'Architecture overview',
-      'What this project does not claim',
-    ]) {
-      expect(screen.getByRole('heading', { name: title })).toBeInTheDocument()
-    }
-    expect(screen.getByText(project.overview)).toBeInTheDocument()
-    expect(screen.getByText(project.problem)).toBeInTheDocument()
-    for (const limitation of project.limitations) {
-      expect(screen.getByText(limitation)).toBeInTheDocument()
-    }
-  })
-
-  it('labels every feature with its status and keeps planned features as Planned', () => {
-    renderProjects()
-    for (const feature of project.features) {
-      const heading = screen.getByRole('heading', { name: feature.title })
-      const card = heading.closest('li')!
-      const label = feature.status[0]!.toUpperCase() + feature.status.slice(1)
-      expect(within(card).getByText(label)).toBeInTheDocument()
-    }
-    const liveModel = screen.getByRole('heading', { name: 'Live AI model' }).closest('li')!
-    expect(within(liveModel).getByText('Planned')).toBeInTheDocument()
-  })
-
-  it('lists every architecture layer in order', () => {
-    renderProjects()
-    const diagram = screen.getByRole('list', { name: /Architecture layers/ })
-    const names = within(diagram)
-      .getAllByRole('listitem')
-      .map((item) => item.textContent ?? '')
-      .filter((text) => text !== '')
-    expect(names).toHaveLength(project.architecture.length)
-    project.architecture.forEach((layer, index) => {
-      expect(names[index]).toContain(layer.name)
-    })
-  })
-
-  it('shows when the repository was last reviewed', () => {
-    renderProjects()
-    expect(screen.getByText(formatIsoDate(project.lastReviewed), { exact: false })).toBeInTheDocument()
-  })
-})
-
-describe('formatIsoDate', () => {
-  it('formats independent of time zone', () => {
-    expect(formatIsoDate('2026-10-30')).toBe('30 October 2026')
   })
 })

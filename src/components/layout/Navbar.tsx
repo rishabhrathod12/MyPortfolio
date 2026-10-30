@@ -3,13 +3,16 @@ import { Menu, X } from 'lucide-react'
 import { navItems } from '@/data/nav'
 import { profile } from '@/data/profile'
 import { useScrollSpy } from '@/hooks/useScrollSpy'
+import { AppLink } from '@/components/ui/AppLink'
 import { cn } from '@/lib/cn'
 import { MobileMenu } from './MobileMenu'
 
 const MENU_ID = 'mobile-menu'
 const sectionIds = navItems.map((item) => item.id)
 
-export function Navbar() {
+/** `isHome` is false on detail pages, where the section links lead back to the home page. */
+export function Navbar({ isHome = true }: { isHome?: boolean }) {
+  const hrefPrefix = isHome ? '' : '/'
   const [open, setOpen] = useState(false)
   const buttonRef = useRef<HTMLButtonElement>(null)
   const activeId = useScrollSpy(sectionIds)
@@ -29,19 +32,19 @@ export function Navbar() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-ink-950/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <a
-          href="#top"
+        <AppLink
+          href={`${hrefPrefix}#top`}
           className="text-base font-semibold tracking-tight text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-cyan"
         >
           {profile.name}
-        </a>
+        </AppLink>
 
         <nav aria-label="Primary" className="hidden md:block">
           <ul className="flex items-center gap-1">
             {navItems.map((item) => (
               <li key={item.id}>
-                <a
-                  href={`#${item.id}`}
+                <AppLink
+                  href={`${hrefPrefix}#${item.id}`}
                   aria-current={activeId === item.id ? 'true' : undefined}
                   className={cn(
                     'rounded-md px-3 py-2 text-sm text-slate-400 transition hover:text-white focus-visible:outline-2 focus-visible:outline-accent-cyan',
@@ -49,7 +52,7 @@ export function Navbar() {
                   )}
                 >
                   {item.label}
-                </a>
+                </AppLink>
               </li>
             ))}
           </ul>
@@ -71,6 +74,7 @@ export function Navbar() {
         <MobileMenu
           id={MENU_ID}
           items={navItems}
+          hrefPrefix={hrefPrefix}
           activeId={activeId}
           onNavigate={() => setOpen(false)}
         />

@@ -53,10 +53,8 @@ export interface ExperienceEntry {
   id: string
   role: string
   organization: string
-  category: string
   dates: DateRange
   summary: string
-  highlights: readonly string[]
 }
 
 export interface EducationEntry {
@@ -66,17 +64,13 @@ export interface EducationEntry {
   dates: DateRange
 }
 
-export interface LearningTopic {
+export interface FocusTopic {
   name: string
 }
 
-export interface LearningSummary {
+export interface TechnicalFocus {
   heading: string
-  description: string
-  sources: string
-  topics: readonly LearningTopic[]
-  applied: string
-  disclaimer: string
+  topics: readonly FocusTopic[]
 }
 
 export type FeatureStatus = 'implemented' | 'prototype' | 'planned'
@@ -101,9 +95,16 @@ export interface StackGroup {
 }
 
 export interface Project {
+  /** Also the URL slug: the detail page lives at /projects/<id>. */
   id: string
   name: string
   tagline: string
+  /** One or two sentences for the card on the main page. */
+  shortDescription: string
+  /** A few technology names for the card. The full stack is on the detail page only. */
+  highlights: readonly string[]
+  /** Alt text for the cover image (the image itself is mapped in components/project/covers.ts). */
+  coverAlt: string
   overview: string
   problem: string
   /** Plain statement of how far the project has actually got. */
@@ -111,6 +112,8 @@ export interface Project {
   features: readonly ProjectFeature[]
   stack: readonly StackGroup[]
   architecture: readonly ArchitectureLayer[]
+  /** What each status means for this project, shown on the detail page. */
+  statusNotes: Record<FeatureStatus, string>
   /** Things that are deliberately not claimed. */
   limitations: readonly string[]
   repoUrl: string

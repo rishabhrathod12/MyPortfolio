@@ -1,5 +1,6 @@
 import type { AnchorHTMLAttributes, ReactNode } from 'react'
 import { cn } from '@/lib/cn'
+import { AppLink } from './AppLink'
 
 interface ButtonProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   href: string
@@ -15,7 +16,7 @@ const variants = {
 /** Link styled as a button. Every call-to-action here navigates, so it is always an anchor. */
 export function Button({ variant = 'primary', className, children, ...rest }: ButtonProps) {
   return (
-    <a
+    <AppLink
       className={cn(
         'inline-flex items-center justify-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-cyan',
         variants[variant],
@@ -24,6 +25,6 @@ export function Button({ variant = 'primary', className, children, ...rest }: Bu
       {...rest}
     >
       {children}
-    </a>
+    </AppLink>
   )
 }

@@ -39,8 +39,8 @@ All copy lives in `src/data/`, separate from the components. Edit data, not JSX.
 | `skills.ts` | The approved skill list (name and icon key) |
 | `experience.ts` | Professional experience |
 | `education.ts` | Education |
-| `learning.ts` | Self-directed learning |
-| `projects.ts` | Featured projects, features, stack, architecture, limitations |
+| `focus.ts` | Technical focus and areas of interest |
+| `projects.ts` | Each project: card text (`shortDescription`, `highlights`), and detail-page content (features, stack, architecture, status notes, limitations) |
 | `nav.ts` | Navigation items (each `id` must match a section `id`) |
 
 ### Content rules
@@ -48,7 +48,7 @@ All copy lives in `src/data/`, separate from the components. Edit data, not JSX.
 The site is deliberately honest. `src/data/data.test.ts` and `projects.test.ts` fail if:
 
 - an email address, certification, revenue figure or engineering branch appears;
-- the AI knowledge stops being described as self-directed learning;
+- the site mentions YouTube, courses, "self-taught", "self-directed" or "aspiring" wording, or the About text mentions the Amazon business;
 - a feature the repository lists as not built (live model, live data, authentication) is marked `implemented`;
 - a project gets a `demoUrl` that is not real.
 
@@ -57,6 +57,14 @@ The site is deliberately honest. `src/data/data.test.ts` and `projects.test.ts` 
 That repository changes quickly. Before changing a feature status in `projects.ts`, read the repository's
 `docs/PROJECT_CONTEXT.md` and recent commits, then update `lastReviewed`. Only mark something `implemented`
 when the repository says it is built and tested. Add `demoUrl` only when a public demo exists.
+
+### Adding a project
+
+1. Add an entry to `src/data/projects.ts`. Its `id` becomes the address: `/projects/<id>`.
+2. Add a 1200 x 675 cover image to `src/assets/projects/` and map it in `src/components/project/covers.ts`.
+3. The main page shows only the card (name, cover, `shortDescription`, `highlights`, GitHub and View Details). Everything else appears only on the project's own page.
+
+Project pages use a small History-API router (`src/lib/router.ts`), with no extra dependency. `vercel.json` rewrites every path to `index.html` so a direct visit or reload of `/projects/<id>` works. The sitemap lists each project page automatically.
 
 ### Profile photo
 
@@ -74,12 +82,13 @@ src/
   components/
     icons/     GitHub and LinkedIn SVGs (Lucide has no brand icons)
     layout/    Navbar, MobileMenu, Footer, SkipLink
-    project/   Project showcase, feature list, architecture diagram
+    project/   Project card, feature list, architecture diagram, cover images
     ui/        Section, Container, GlassCard, Badge, StatusBadge, Button, Reveal
   data/        All content and its tests
-  hooks/       useScrollSpy
-  lib/         cn, formatIsoDate
-  sections/    Hero, About, Skills, Projects, Experience, Education, Learning, Contact
+  hooks/       useScrollSpy, usePageMeta
+  lib/         cn, formatIsoDate, router
+  pages/       ProjectDetailPage, NotFoundPage
+  sections/    Hero, Skills, Projects, About, Focus, Experience, Education, Contact
   types/       Shared TypeScript types
 tests/e2e/     Playwright specs
 vite-plugins/  Build-time site metadata (canonical URL, Open Graph, sitemap)
