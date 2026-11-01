@@ -24,6 +24,8 @@ export type SkillIconKey =
   | 'python'
   | 'machine-learning'
   | 'deep-learning'
+  | 'nlp'
+  | 'mcp'
   | 'generative-ai'
   | 'agentic-ai'
   | 'llm'
