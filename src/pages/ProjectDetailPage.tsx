@@ -4,6 +4,7 @@ import { GitHubIcon } from '@/components/icons/GitHubIcon'
 import { ArchitectureDiagram } from '@/components/project/ArchitectureDiagram'
 import { projectCovers } from '@/components/project/covers'
 import { FeatureList } from '@/components/project/FeatureList'
+import { ScreenshotGallery } from '@/components/project/ScreenshotGallery'
 import { AppLink } from '@/components/ui/AppLink'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
@@ -119,6 +120,36 @@ export function ProjectDetailPage({ project }: { project: Project }) {
           <FeatureList features={project.features} />
         </DetailSection>
 
+        {project.documentAccess && (
+          <DetailSection id="document-access" title="Company Documents and Private PDFs">
+            <p className="mb-5 max-w-3xl leading-relaxed text-slate-300">
+              {project.documentAccess.intro}
+            </p>
+            <div className="grid gap-6 md:grid-cols-2">
+              {project.documentAccess.columns.map((column) => (
+                <GlassCard key={column.title}>
+                  <h3 className="mb-3 font-semibold text-white">{column.title}</h3>
+                  <ul className="list-disc space-y-2 pl-5 text-sm text-slate-300 marker:text-slate-500">
+                    {column.points.map((point) => (
+                      <li key={point}>{point}</li>
+                    ))}
+                  </ul>
+                </GlassCard>
+              ))}
+            </div>
+          </DetailSection>
+        )}
+
+        {project.gallery && (
+          <DetailSection id="screenshots" title="Screenshots">
+            <p className="mb-6 max-w-3xl text-sm text-slate-400">
+              Captured from the running application. The company data shown is fictional sample
+              data. The screenshots show interface workflows, not answer quality.
+            </p>
+            <ScreenshotGallery projectId={project.id} groups={project.gallery} />
+          </DetailSection>
+        )}
+
         <DetailSection id="stack" title="Technology Stack">
           <dl className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {project.stack.map((group) => (
@@ -195,6 +226,28 @@ export function ProjectDetailPage({ project }: { project: Project }) {
             </GlassCard>
           </div>
         </DetailSection>
+
+        {project.deploymentNotes && (
+          <DetailSection id="deployment" title="Demo Deployment Notes">
+            <GlassCard>
+              <ul className="list-disc space-y-2 pl-5 text-sm text-slate-300 marker:text-slate-500">
+                {project.deploymentNotes.map((note) => (
+                  <li key={note}>{note}</li>
+                ))}
+              </ul>
+            </GlassCard>
+          </DetailSection>
+        )}
+
+        {project.outcomes && (
+          <DetailSection id="outcomes" title="What I Built and Learned">
+            <ul className="max-w-3xl list-disc space-y-2 pl-5 leading-relaxed text-slate-300 marker:text-slate-500">
+              {project.outcomes.map((outcome) => (
+                <li key={outcome}>{outcome}</li>
+              ))}
+            </ul>
+          </DetailSection>
+        )}
 
         <DetailSection id="repository" title="GitHub Repository">
           <GlassCard className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

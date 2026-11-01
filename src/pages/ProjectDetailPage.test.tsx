@@ -25,6 +25,39 @@ const SECTION_HEADINGS = [
   'GitHub Repository',
 ]
 
+describe('ProjectDetailPage for Apex Knowledge Assistant', () => {
+  const apex = projects.find((item) => item.id === 'apex-knowledge-assistant')!
+
+  it('shows the case-study sections, the screenshots with alt text, and the demo notes', () => {
+    render(
+      <LazyMotion features={domAnimation} strict>
+        <ProjectDetailPage project={apex} />
+      </LazyMotion>,
+    )
+    const headings = screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent)
+    expect(headings).toEqual([
+      'Project Overview',
+      'Problem Statement',
+      'Key Features',
+      'Company Documents and Private PDFs',
+      'Screenshots',
+      'Technology Stack',
+      'Architecture Overview',
+      'Implementation Status',
+      'Limitations and Future Scope',
+      'Demo Deployment Notes',
+      'What I Built and Learned',
+      'GitHub Repository',
+    ])
+    const gallery = screen.getByRole('region', { name: 'Screenshots' })
+    for (const shot of apex.gallery!.flatMap((group) => group.shots)) {
+      expect(within(gallery).getByRole('img', { name: shot.alt })).toHaveAttribute('src')
+    }
+    const deployment = screen.getByRole('region', { name: 'Demo Deployment Notes' })
+    expect(within(deployment).getByText(/not HTTPS/)).toBeInTheDocument()
+  })
+})
+
 describe('ProjectDetailPage', () => {
   it('has the project name as the single h1 and a link back to the projects section', () => {
     renderPage()

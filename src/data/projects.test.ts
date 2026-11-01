@@ -68,6 +68,43 @@ describe('projects data', () => {
     expect(travelmate?.lastReviewed).toMatch(/^\d{4}-\d{2}-\d{2}$/)
   })
 
+  describe('Apex Knowledge Assistant', () => {
+    const apex = projects.find((project) => project.id === 'apex-knowledge-assistant')
+
+    it('links to the real repository and has no invented demo link', () => {
+      expect(apex?.repoUrl).toBe('https://github.com/rishabhrathod12/Chatbot_Apex_Industries')
+      expect(apex?.demoUrl).toBeUndefined()
+    })
+
+    it('says the data is fictional and the demo is HTTP only, not production', () => {
+      const prose = JSON.stringify(apex)
+      expect(prose).toMatch(/fictional/i)
+      expect(prose).toMatch(/HTTP, not HTTPS/)
+      expect(apex?.deploymentNotes?.join(' ')).toMatch(/demo/i)
+    })
+
+    it('keeps HTTPS, backups and scaling as planned, not implemented', () => {
+      for (const id of ['https', 'backups', 'scale']) {
+        expect(apex?.features.find((feature) => feature.id === id)?.status).toBe('planned')
+      }
+    })
+
+    it('has a captioned, described screenshot for every gallery entry, with unique files', () => {
+      const shots = apex?.gallery?.flatMap((group) => group.shots) ?? []
+      expect(shots).toHaveLength(16)
+      expect(new Set(shots.map((shot) => shot.file)).size).toBe(shots.length)
+      for (const shot of shots) {
+        expect(shot.alt.length).toBeGreaterThan(30)
+        expect(shot.caption.length).toBeGreaterThan(20)
+      }
+    })
+
+    it('does not claim metrics, customers or certifications', () => {
+      const prose = JSON.stringify(apex)
+      expect(prose).not.toMatch(/testimonial|benchmark|\d+\s?%|production-ready|SOC ?2|ISO ?27001/i)
+    })
+  })
+
   it('does not overclaim a live model or live data in prose', () => {
     const prose = JSON.stringify(travelmate)
     expect(prose).not.toMatch(/production[- ]ready|deployed|live (bookings?|prices)/i)

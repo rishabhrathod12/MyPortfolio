@@ -62,6 +62,7 @@ when the repository says it is built and tested. Add `demoUrl` only when a publi
 
 1. Add an entry to `src/data/projects.ts`. Its `id` becomes the address: `/projects/<id>`.
 2. Add a 1200 x 675 cover image to `src/assets/projects/` and map it in `src/components/project/covers.ts`.
+   For a case study, also fill the optional `documentAccess`, `gallery`, `deploymentNotes` and `outcomes` fields. Gallery screenshots go in `src/assets/projects/<id>/<file>.jpg` (1200 px wide), and each needs a caption and descriptive alt text.
 3. The main page shows only the card (name, cover, `shortDescription`, `highlights`, GitHub and View Details). Everything else appears only on the project's own page.
 
 Project pages use a small History-API router (`src/lib/router.ts`), with no extra dependency. `vercel.json` rewrites every path to `index.html` so a direct visit or reload of `/projects/<id>` works. The sitemap lists each project page automatically.

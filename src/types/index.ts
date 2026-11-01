@@ -98,6 +98,27 @@ export interface StackGroup {
   items: readonly string[]
 }
 
+export interface ProjectScreenshot {
+  /** File name (without extension) in src/assets/projects/<project id>/, mapped in components/project/covers.ts. */
+  file: string
+  title: string
+  caption: string
+  alt: string
+}
+
+export interface ScreenshotGroup {
+  id: string
+  label: string
+  description: string
+  shots: readonly ProjectScreenshot[]
+}
+
+/** One side of a comparison, for example company documents versus personal uploads. */
+export interface ComparisonColumn {
+  title: string
+  points: readonly string[]
+}
+
 export interface Project {
   /** Also the URL slug: the detail page lives at /projects/<id>. */
   id: string
@@ -125,6 +146,13 @@ export interface Project {
   demoUrl?: string
   /** ISO date the repository was last compared against this description. */
   lastReviewed: string
+  /** Optional case-study sections. A project without them shows the standard page only. */
+  documentAccess?: { intro: string; columns: readonly ComparisonColumn[] }
+  gallery?: readonly ScreenshotGroup[]
+  /** Clearly labelled demo deployment notes. */
+  deploymentNotes?: readonly string[]
+  /** What was built and learned, with no invented metrics. */
+  outcomes?: readonly string[]
 }
 
 export interface ContactInfo {
