@@ -8,7 +8,7 @@ import { focus } from '@/data/focus'
 import { navItems } from '@/data/nav'
 import { projects } from '@/data/projects'
 
-const project = projects[0]!
+const project = projects.find((item) => item.id === 'travelmate-ai')!
 
 beforeEach(() => {
   window.history.replaceState(null, '', '/')

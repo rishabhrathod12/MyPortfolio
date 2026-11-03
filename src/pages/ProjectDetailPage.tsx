@@ -1,9 +1,12 @@
 import { ArrowLeft, ExternalLink } from 'lucide-react'
 import { useEffect, useRef, type ReactNode } from 'react'
 import { GitHubIcon } from '@/components/icons/GitHubIcon'
+import { AgentGraph } from '@/components/project/AgentGraph'
 import { ArchitectureDiagram } from '@/components/project/ArchitectureDiagram'
 import { projectCovers } from '@/components/project/covers'
 import { FeatureList } from '@/components/project/FeatureList'
+import { KpiFormulas } from '@/components/project/KpiFormulas'
+import { Roadmap } from '@/components/project/Roadmap'
 import { ScreenshotGallery } from '@/components/project/ScreenshotGallery'
 import { AppLink } from '@/components/ui/AppLink'
 import { Badge } from '@/components/ui/Badge'
@@ -11,12 +14,12 @@ import { Button } from '@/components/ui/Button'
 import { Container } from '@/components/ui/Container'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { Reveal } from '@/components/ui/Reveal'
-import { StatusBadge, statusLabels } from '@/components/ui/StatusBadge'
+import { StatusBadge, labelFor } from '@/components/ui/StatusBadge'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { formatIsoDate } from '@/lib/format'
-import type { FeatureStatus, Project } from '@/types'
+import type { FeatureStatus, Project, ProjectSection } from '@/types'
 
-const STATUS_ORDER: readonly FeatureStatus[] = ['implemented', 'prototype', 'planned']
+const STATUS_ORDER: readonly FeatureStatus[] = ['implemented', 'prototype', 'planned', 'future']
 
 function DetailSection({ id, title, children }: { id: string; title: string; children: ReactNode }) {
   return (
@@ -31,6 +34,21 @@ function DetailSection({ id, title, children }: { id: string; title: string; chi
   )
 }
 
+function StatusCards({
+  section,
+  project,
+}: {
+  section: ProjectSection
+  project: Project
+}) {
+  return (
+    <div className="space-y-5">
+      <p className="max-w-3xl leading-relaxed text-slate-300">{section.intro}</p>
+      <FeatureList features={section.items} labels={project.statusLabels} />
+    </div>
+  )
+}
+
 export function ProjectDetailPage({ project }: { project: Project }) {
   usePageMeta(`${project.name} | Rishabh Rathod`, project.shortDescription)
 
@@ -40,7 +58,15 @@ export function ProjectDetailPage({ project }: { project: Project }) {
   }, [project.id])
 
   const cover = projectCovers[project.id]
-  const planned = project.features.filter((feature) => feature.status === 'planned')
+  const planned = project.features.filter(
+    (feature) => feature.status === 'planned' || feature.status === 'future',
+  )
+  const labels = project.statusLabels
+  const statusGroups = STATUS_ORDER.filter(
+    (status) =>
+      status !== 'future' ||
+      project.features.some((feature) => feature.status === 'future'),
+  )
 
   return (
     <article className="pb-20 pt-24">
@@ -66,6 +92,21 @@ export function ProjectDetailPage({ project }: { project: Project }) {
                 {project.name}
               </h1>
               <p className="mt-3 text-lg text-slate-300">{project.tagline}</p>
+              {project.categories && (
+                <ul aria-label="Project categories" className="mt-4 flex flex-wrap gap-2">
+                  {project.categories.map((category) => (
+                    <li key={category}>
+                      <Badge>{category}</Badge>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {project.projectStatus && (
+                <p className="mt-4 text-sm text-slate-300">
+                  <span className="font-semibold text-white">Status: </span>
+                  {project.projectStatus}
+                </p>
+              )}
               <p className="mt-5 rounded-lg border border-blue-400/20 bg-blue-400/5 px-4 py-3 text-sm text-slate-300">
                 <span className="font-semibold text-blue-300">Current state: </span>
                 {project.currentState}
@@ -112,13 +153,25 @@ export function ProjectDetailPage({ project }: { project: Project }) {
           <p className="max-w-3xl leading-relaxed text-slate-300">{project.problem}</p>
         </DetailSection>
 
+        {project.kpis && (
+          <DetailSection id="kpis" title="Advertising Metrics">
+            <KpiFormulas intro={project.kpis.intro} items={project.kpis.items} />
+          </DetailSection>
+        )}
+
         <DetailSection id="features" title="Key Features">
           <p className="mb-4 text-sm text-slate-400">
-            Each feature is marked by how far it has actually got: implemented, prototype or
-            planned.
+            Each feature is marked by how far it has actually got:{' '}
+            {statusGroups.map((status) => labelFor(status, labels).toLowerCase()).join(', ')}.
           </p>
-          <FeatureList features={project.features} />
+          <FeatureList features={project.features} labels={labels} />
         </DetailSection>
+
+        {project.agents && (
+          <DetailSection id="agents" title="Agentic AI Architecture">
+            <AgentGraph section={project.agents} labels={labels} />
+          </DetailSection>
+        )}
 
         {project.documentAccess && (
           <DetailSection id="document-access" title="Company Documents and Private PDFs">
@@ -171,23 +224,51 @@ export function ProjectDetailPage({ project }: { project: Project }) {
           </dl>
         </DetailSection>
 
+        {project.capabilities && (
+          <DetailSection id="capabilities" title="ML and GenAI Capabilities">
+            <StatusCards section={project.capabilities} project={project} />
+          </DetailSection>
+        )}
+
+        {project.integration && (
+          <DetailSection id="integration" title="Data Integration">
+            <StatusCards section={project.integration} project={project} />
+          </DetailSection>
+        )}
+
         <DetailSection id="architecture" title="Architecture Overview">
-          <ArchitectureDiagram layers={project.architecture} />
+          <ArchitectureDiagram layers={project.architecture} labels={labels} />
         </DetailSection>
 
+        {project.safety && (
+          <DetailSection id="safety" title="Safety and Human Approval">
+            <StatusCards section={project.safety} project={project} />
+          </DetailSection>
+        )}
+
+        {project.roadmap && (
+          <DetailSection id="roadmap" title="Development Roadmap">
+            <Roadmap section={project.roadmap} labels={labels} />
+          </DetailSection>
+        )}
+
         <DetailSection id="status" title="Implementation Status">
-          <div className="grid gap-4 md:grid-cols-3">
-            {STATUS_ORDER.map((status) => {
+          <div
+            className={
+              statusGroups.length > 3 ? 'grid gap-4 md:grid-cols-2 lg:grid-cols-4' : 'grid gap-4 md:grid-cols-3'
+            }
+          >
+            {statusGroups.map((status) => {
               const items = project.features.filter((feature) => feature.status === status)
               return (
                 <GlassCard key={status}>
                   <div className="flex items-center justify-between gap-2">
-                    <h3 className="font-semibold text-white">{statusLabels[status]}</h3>
-                    <StatusBadge status={status} />
+                    <h3 className="font-semibold text-white">{labelFor(status, labels)}</h3>
+                    <StatusBadge status={status} labels={labels} />
                   </div>
                   <p className="mt-2 text-sm text-slate-400">{project.statusNotes[status]}</p>
                   <ul
-                    aria-label={`${statusLabels[status]} features`}
+                    aria-label={`${labelFor(status, labels)} features`}
                     className="mt-3 list-disc space-y-1 pl-5 text-sm text-slate-300 marker:text-slate-500"
                   >
                     {items.map((feature) => (

@@ -105,6 +105,74 @@ describe('projects data', () => {
     })
   })
 
+  describe('AdPilot AI', () => {
+    const adpilot = projects.find((project) => project.id === 'adpilot-ai')
+
+    it('is the first project and links to the real repository, with no invented demo', () => {
+      expect(projects[0]?.id).toBe('adpilot-ai')
+      expect(adpilot?.repoUrl).toBe('https://github.com/rishabhrathod12/AI-Ads-Autopilot')
+      expect(adpilot?.demoUrl).toBeUndefined()
+    })
+
+    it('keeps unbuilt work out of the implemented status', () => {
+      const status = (id: string) =>
+        [
+          ...(adpilot?.features ?? []),
+          ...(adpilot?.agents?.items ?? []),
+          ...(adpilot?.safety?.items ?? []),
+          ...(adpilot?.integration?.items ?? []),
+          ...(adpilot?.roadmap?.items ?? []),
+        ].find((item) => item.id === id)?.status
+      for (const id of ['bid-agent', 'budget-agent', 'strategy-agent', 'bid-budget', 'approval-center', 'safe-approval', 'm6']) {
+        expect(status(id), id).toBe('planned')
+      }
+      for (const id of ['ads-api', 'int-amazon', 'safe-oauth', 'm9']) {
+        expect(status(id), id).toBe('future')
+      }
+      expect(status('agent-graph')).toBe('prototype')
+      expect(status('m5')).toBe('prototype')
+    })
+
+    it('says on the card that it is in development and on mock data', () => {
+      expect(adpilot?.shortDescription).toMatch(/in active development/i)
+      expect(adpilot?.shortDescription).toMatch(/mock data/i)
+    })
+
+    it('states the failed checks, mock data and that execution is off', () => {
+      const prose = JSON.stringify(adpilot)
+      expect(prose).toMatch(/MOCK/)
+      expect(prose).toMatch(/AD_EXECUTION_ENABLED is false/)
+      expect(adpilot?.limitations.join(' ')).toMatch(/0\.67 against 0\.85/)
+      expect(adpilot?.limitations.join(' ')).toMatch(/No Amazon account or Amazon Ads API is connected/)
+    })
+
+    it('shows the built specialists as in progress, not complete', () => {
+      expect(adpilot?.statusLabels?.prototype).toBe('In Progress')
+      const built = adpilot?.agents?.items.filter((agent) => agent.status !== 'planned') ?? []
+      expect(built.map((agent) => agent.id)).toEqual([
+        'supervisor',
+        'campaign-analysis',
+        'keyword-intelligence',
+        'performance-prediction',
+        'ppc-reporting',
+      ])
+      for (const agent of built) expect(agent.status).toBe('prototype')
+    })
+
+    it('does not claim results, deployment or unused technology as built', () => {
+      const prose = JSON.stringify(adpilot)
+      expect(prose).not.toMatch(/\d+\s?%|production-ready|deployed|ROI|benchmark|testimonial/i)
+      expect(adpilot?.stack.flatMap((group) => group.items).join(' ')).not.toMatch(
+        /XGBoost|PyTorch|Transformers|Vercel|Railway|Render/i,
+      )
+    })
+
+    it('defines every status it uses, including future', () => {
+      expect(adpilot?.statusNotes.future?.length).toBeGreaterThan(20)
+      expect(adpilot?.lastReviewed).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+    })
+  })
+
   it('does not overclaim a live model or live data in prose', () => {
     const prose = JSON.stringify(travelmate)
     expect(prose).not.toMatch(/production[- ]ready|deployed|live (bookings?|prices)/i)

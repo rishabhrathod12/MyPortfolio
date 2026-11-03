@@ -79,7 +79,11 @@ export interface TechnicalFocus {
   topics: readonly FocusTopic[]
 }
 
-export type FeatureStatus = 'implemented' | 'prototype' | 'planned'
+/** `future` is for work that depends on something outside the project, such as external API access. */
+export type FeatureStatus = 'implemented' | 'prototype' | 'planned' | 'future'
+
+/** Per-project wording for a status, for example showing `prototype` as "In Progress". */
+export type StatusLabels = Partial<Record<FeatureStatus, string>>
 
 export interface ProjectFeature {
   id: string
@@ -121,6 +125,23 @@ export interface ComparisonColumn {
   points: readonly string[]
 }
 
+/** A titled group of status-labelled items, with a short introduction. */
+export interface ProjectSection {
+  intro: string
+  items: readonly ProjectFeature[]
+}
+
+export interface AgentSection extends ProjectSection {
+  /** Plain steps describing how a request moves through the agents. */
+  workflow: readonly string[]
+}
+
+export interface KpiFormula {
+  name: string
+  formula: string
+  note: string
+}
+
 export interface Project {
   /** Also the URL slug: the detail page lives at /projects/<id>. */
   id: string
@@ -139,8 +160,14 @@ export interface Project {
   features: readonly ProjectFeature[]
   stack: readonly StackGroup[]
   architecture: readonly ArchitectureLayer[]
-  /** What each status means for this project, shown on the detail page. */
-  statusNotes: Record<FeatureStatus, string>
+  /** What each status means for this project, shown on the detail page. `future` is optional. */
+  statusNotes: Record<'implemented' | 'prototype' | 'planned', string> &
+    Partial<Record<'future', string>>
+  /** Optional wording for statuses on this project's pages. Defaults are in components/ui/StatusBadge.tsx. */
+  statusLabels?: StatusLabels
+  /** Optional category tags and one-line state, shown in the detail page hero. */
+  categories?: readonly string[]
+  projectStatus?: string
   /** Things that are deliberately not claimed. */
   limitations: readonly string[]
   repoUrl: string
@@ -155,6 +182,13 @@ export interface Project {
   deploymentNotes?: readonly string[]
   /** What was built and learned, with no invented metrics. */
   outcomes?: readonly string[]
+  /** Optional case-study sections for a multi-agent project. */
+  kpis?: { intro: string; items: readonly KpiFormula[] }
+  agents?: AgentSection
+  capabilities?: ProjectSection
+  integration?: ProjectSection
+  safety?: ProjectSection
+  roadmap?: ProjectSection
 }
 
 export interface ContactInfo {

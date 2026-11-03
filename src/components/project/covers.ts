@@ -1,8 +1,10 @@
+import adpilotCover from '@/assets/projects/adpilot-ai.svg'
 import apexCover from '@/assets/projects/apex-knowledge-assistant.jpg'
 import travelmateCover from '@/assets/projects/travelmate-ai.jpg'
 
 /** Cover image for each project, keyed by project id. Kept out of the data files so they stay plain content. */
 export const projectCovers: Record<string, string> = {
+  'adpilot-ai': adpilotCover,
   'travelmate-ai': travelmateCover,
   'apex-knowledge-assistant': apexCover,
 }

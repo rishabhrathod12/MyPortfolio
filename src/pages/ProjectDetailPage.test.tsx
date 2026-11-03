@@ -4,7 +4,7 @@ import { projects } from '@/data/projects'
 import { formatIsoDate } from '@/lib/format'
 import { ProjectDetailPage } from './ProjectDetailPage'
 
-const project = projects[0]!
+const project = projects.find((item) => item.id === 'travelmate-ai')!
 
 function renderPage() {
   return render(
@@ -55,6 +55,71 @@ describe('ProjectDetailPage for Apex Knowledge Assistant', () => {
     }
     const deployment = screen.getByRole('region', { name: 'Demo Deployment Notes' })
     expect(within(deployment).getByText(/not HTTPS/)).toBeInTheDocument()
+  })
+})
+
+describe('ProjectDetailPage for AdPilot AI', () => {
+  const adpilot = projects.find((item) => item.id === 'adpilot-ai')!
+
+  function renderAdpilot() {
+    return render(
+      <LazyMotion features={domAnimation} strict>
+        <ProjectDetailPage project={adpilot} />
+      </LazyMotion>,
+    )
+  }
+
+  it('shows the multi-agent case-study sections in order', () => {
+    renderAdpilot()
+    const headings = screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent)
+    expect(headings).toEqual([
+      'Project Overview',
+      'Problem Statement',
+      'Advertising Metrics',
+      'Key Features',
+      'Agentic AI Architecture',
+      'Technology Stack',
+      'ML and GenAI Capabilities',
+      'Data Integration',
+      'Architecture Overview',
+      'Safety and Human Approval',
+      'Development Roadmap',
+      'Implementation Status',
+      'Limitations and Future Scope',
+      'What I Built and Learned',
+      'GitHub Repository',
+    ])
+  })
+
+  it('shows its categories, status line and four status groups with its own wording', () => {
+    renderAdpilot()
+    expect(screen.getByRole('list', { name: 'Project categories' })).toBeInTheDocument()
+    const section = screen.getByRole('region', { name: 'Implementation Status' })
+    for (const label of ['Implemented', 'In Progress', 'Planned', 'Future']) {
+      expect(within(section).getByRole('list', { name: `${label} features` })).toBeInTheDocument()
+    }
+    expect(within(section).queryByText('Prototype')).toBeNull()
+  })
+
+  it('labels the planned agents as Planned and the Ads API as Future', () => {
+    renderAdpilot()
+    const agents = screen.getByRole('region', { name: 'Agentic AI Architecture' })
+    const bid = within(agents).getByRole('heading', { name: 'Bid Optimization' }).closest('li')!
+    expect(within(bid).getByText('Planned')).toBeInTheDocument()
+    const supervisor = within(agents).getByRole('heading', { name: 'Supervisor' }).closest('li')!
+    expect(within(supervisor).getByText('In Progress')).toBeInTheDocument()
+    const features = screen.getByRole('region', { name: 'Key Features' })
+    const api = within(features).getByRole('heading', { name: 'Amazon Ads API integration' }).closest('li')!
+    expect(within(api).getByText('Future')).toBeInTheDocument()
+  })
+
+  it('lists the five KPI formulas', () => {
+    renderAdpilot()
+    const section = screen.getByRole('region', { name: 'Advertising Metrics' })
+    for (const kpi of adpilot.kpis!.items) {
+      expect(within(section).getByText(kpi.name)).toBeInTheDocument()
+      expect(within(section).getByText(kpi.formula)).toBeInTheDocument()
+    }
   })
 })
 

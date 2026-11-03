@@ -1,10 +1,16 @@
 import { ChevronDown } from 'lucide-react'
 import { Fragment } from 'react'
 import { StatusBadge } from '@/components/ui/StatusBadge'
-import type { ArchitectureLayer } from '@/types'
+import type { ArchitectureLayer, StatusLabels } from '@/types'
 
 /** Request flow from the interface down to storage and approvals, one layer per row. */
-export function ArchitectureDiagram({ layers }: { layers: readonly ArchitectureLayer[] }) {
+export function ArchitectureDiagram({
+  layers,
+  labels,
+}: {
+  layers: readonly ArchitectureLayer[]
+  labels?: StatusLabels
+}) {
   return (
     <ol aria-label="Architecture layers, from the interface down to storage" className="mx-auto max-w-2xl">
       {layers.map((layer, index) => (
@@ -12,7 +18,7 @@ export function ArchitectureDiagram({ layers }: { layers: readonly ArchitectureL
           <li className="rounded-xl border border-white/10 bg-white/5 px-4 py-3">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <span className="font-medium text-white">{layer.name}</span>
-              <StatusBadge status={layer.status} />
+              <StatusBadge status={layer.status} labels={labels} />
             </div>
             <p className="mt-1 text-sm text-slate-400">{layer.description}</p>
           </li>

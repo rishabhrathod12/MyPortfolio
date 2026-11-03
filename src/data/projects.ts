@@ -7,6 +7,358 @@ import type { Project } from '@/types'
  */
 export const projects: readonly Project[] = [
   {
+    id: 'adpilot-ai',
+    name: 'AdPilot AI',
+    tagline:
+      'A multi-agent platform for analysing Amazon PPC campaigns, built so every number is calculated by code and every action needs a human.',
+    shortDescription:
+      'An agentic AI platform for analysing Amazon PPC advertising, with a grounded assistant and a LangGraph agent graph. In active development, running on mock data only.',
+    highlights: ['Python', 'FastAPI', 'LangGraph', 'PostgreSQL', 'React'],
+    coverAlt:
+      'AdPilot AI architecture sketch: a Supervisor agent above four built specialists (campaign, keyword, forecast, reporting) and three planned items (bid optimization, budget allocation, human approval).',
+    categories: [
+      'Agentic AI',
+      'Generative AI',
+      'Machine Learning',
+      'Amazon PPC',
+      'SaaS (long-term goal)',
+    ],
+    projectStatus:
+      'In active development. Backend, analytics, forecasting, a grounded assistant and a first agent graph are built on mock data. Recommendations, approvals and Amazon connectivity are not.',
+    overview:
+      'AdPilot AI is an Amazon PPC (Sponsored Products) analysis platform that aims to act like a virtual PPC manager: it investigates campaign performance, finds wasted spend and keyword opportunities, forecasts spend and sales, and answers a seller’s questions using retrieved data and verified calculations. Any consequential campaign change is meant to need explicit human approval. The long-term goal is a multi-tenant platform for sellers, PPC managers and agencies, and the first milestones are built for that from the start, with tenant isolation in the database.',
+    problem:
+      'Amazon sellers often spend on advertising without enough sales, carry a high ACOS, bid on keywords that do not convert, and spend hours on manual reporting. Dashboards show history but do not say what to fix first or why. This project explores a safer design for that gap: deterministic Python for every calculation, a language model only to plan and explain, a validator that checks numbers in an answer against tool results, and a person approving anything that matters.',
+    currentState:
+      'In active development, on synthetic data. Work through milestone M4 (analytics, forecasting, grounded assistant) is built and tested. The multi-agent graph (M5) is partly built and one of its pre-registered checks failed. Recommendations, the approval workflow and the Amazon Ads API are not built.',
+    kpis: {
+      intro:
+        'These are the standard PPC metrics. They are computed by tested code in the backend, never by the language model, and money is held in integer minor units.',
+      items: [
+        { name: 'ACOS', formula: 'Ad spend / ad-attributed sales × 100', note: 'Lower is better for a given target.' },
+        { name: 'ROAS', formula: 'Ad-attributed sales / ad spend', note: 'The inverse view of ACOS.' },
+        { name: 'CTR', formula: 'Clicks / impressions × 100', note: 'How often a shown ad is clicked.' },
+        { name: 'CPC', formula: 'Ad spend / clicks', note: 'Average cost of a click.' },
+        { name: 'CVR', formula: 'Orders / clicks × 100', note: 'How often a click ends in an order.' },
+      ],
+    },
+    features: [
+      {
+        id: 'dashboard',
+        title: 'PPC dashboard',
+        description:
+          'A React dashboard of spend, ad sales, ACOS, ROAS, orders, CTR, conversion rate and CPC with period comparison and trend charts, served by a tenant-scoped analytics API.',
+        status: 'implemented',
+      },
+      {
+        id: 'campaign-analytics',
+        title: 'Campaign analytics and anomaly detection',
+        description:
+          'Campaign metrics, health status and budget utilisation, plus statistical anomaly detection. On held-out synthetic data it caught 8 of 10 planted drops, exactly at its pre-registered limit.',
+        status: 'implemented',
+      },
+      {
+        id: 'keyword-findings',
+        title: 'Keyword and search-term findings',
+        description:
+          'Wasted-spend, negative-keyword and opportunity findings. Two of its pre-registered accuracy checks failed on synthetic data and are published, not adjusted.',
+        status: 'implemented',
+      },
+      {
+        id: 'forecasting',
+        title: 'Spend and sales forecasting',
+        description:
+          'Per-series model selection by backtest (ETS, ridge, gradient boosting and baselines) with prediction intervals, stored as forecast runs. One check against a seasonal-naive baseline failed.',
+        status: 'implemented',
+      },
+      {
+        id: 'assistant',
+        title: 'Grounded PPC assistant',
+        description:
+          'A tool-calling assistant with a pgvector knowledge base. A code-based validator checks the numbers in each answer against retrieved evidence, and it refuses to make changes.',
+        status: 'implemented',
+      },
+      {
+        id: 'reporting',
+        title: 'Performance reports',
+        description:
+          'A deterministic performance report exported as JSON, Markdown or CSV. PDF is not built.',
+        status: 'implemented',
+      },
+      {
+        id: 'agent-graph',
+        title: 'Multi-agent graph',
+        description:
+          'A LangGraph Supervisor with four specialists and a validator, behind an off-by-default switch. A pre-registered routing check failed on one unverified answer, and the graph matched the single assistant without beating it.',
+        status: 'prototype',
+      },
+      {
+        id: 'bid-budget',
+        title: 'Bid and budget recommendations',
+        description:
+          'Target-ACOS bid proposals, budget reallocation and scenario simulation, each with evidence, impact and confidence. Budget use is analysed today but nothing is recommended.',
+        status: 'planned',
+      },
+      {
+        id: 'approval-center',
+        title: 'Human approval center',
+        description:
+          'Review evidence, approve or reject proposals, and keep an audit trail. Execution stays disabled by default and gated.',
+        status: 'planned',
+      },
+      {
+        id: 'ads-api',
+        title: 'Amazon Ads API integration',
+        description:
+          'OAuth, profile and campaign sync, report ingestion and approved changes through an AmazonAdsApiProvider. It depends on API access that has not been obtained.',
+        status: 'future',
+      },
+    ],
+    agents: {
+      intro:
+        'The design is a LangGraph graph in which a Supervisor plans a request and delegates to specialists, then a non-LLM validator checks the draft before it is returned. Four specialists are built today. The bid, budget, wasted-spend and strategy agents from the original vision are not built as agents: wasted spend sits inside the keyword specialist, and bid and budget logic is planned for M6.',
+      items: [
+        {
+          id: 'supervisor',
+          title: 'Supervisor',
+          description:
+            'Understands the request, picks specialists, and writes the final answer from validated evidence.',
+          status: 'prototype',
+        },
+        {
+          id: 'campaign-analysis',
+          title: 'Campaign Analysis',
+          description: 'Campaign KPIs, trends, anomalies and health. Read-only tools.',
+          status: 'prototype',
+        },
+        {
+          id: 'keyword-intelligence',
+          title: 'Keyword Intelligence',
+          description:
+            'Keyword and search-term analysis, wasted spend, negative-keyword candidates and opportunities.',
+          status: 'prototype',
+        },
+        {
+          id: 'performance-prediction',
+          title: 'Performance Prediction',
+          description: 'Runs the forecasting service and reports intervals and model quality.',
+          status: 'prototype',
+        },
+        {
+          id: 'ppc-reporting',
+          title: 'PPC Reporting',
+          description: 'Builds the structured report from validated numbers only.',
+          status: 'prototype',
+        },
+        {
+          id: 'bid-agent',
+          title: 'Bid Optimization',
+          description: 'Target-ACOS bid proposals with explanations. Not built.',
+          status: 'planned',
+        },
+        {
+          id: 'budget-agent',
+          title: 'Budget Allocation',
+          description: 'Budget reallocation and scenario simulation. Not built.',
+          status: 'planned',
+        },
+        {
+          id: 'strategy-agent',
+          title: 'Optimization Strategy',
+          description:
+            'Combines specialist findings into a prioritised plan for approval. Not built.',
+          status: 'planned',
+        },
+      ],
+      workflow: [
+        'The seller asks a question in the chat.',
+        'The Supervisor plans which specialists are needed, with a safe fallback if the plan is unusable.',
+        'Specialists call read-only, tenant-scoped tools, and every result is stored as evidence with its data source (MOCK is flagged).',
+        'A non-LLM validator checks that the numbers in the draft match the evidence.',
+        'The answer is returned, or it says honestly that the data is insufficient. Recommendations and execution are outside this graph.',
+      ],
+    },
+    stack: [
+      { label: 'Backend', items: ['Python 3.12', 'FastAPI', 'Pydantic v2', 'SQLAlchemy', 'Alembic'] },
+      { label: 'Agentic AI', items: ['LangGraph', 'Supervisor pattern', 'Tool calling', 'Structured outputs'] },
+      { label: 'Generative AI', items: ['OpenAI API (behind an LLM port)', 'RAG', 'Prompt engineering'] },
+      {
+        label: 'Machine Learning',
+        items: ['NumPy', 'scikit-learn', 'statsmodels', 'Time-series forecasting', 'Anomaly detection'],
+      },
+      { label: 'Data', items: ['PostgreSQL', 'pgvector', 'Row-level security'] },
+      { label: 'Frontend', items: ['React 19', 'TypeScript', 'Vite'] },
+      {
+        label: 'Infrastructure and quality',
+        items: ['Docker', 'Docker Compose', 'GitHub Actions', 'pytest', 'Vitest', 'Ruff', 'mypy (strict)'],
+      },
+    ],
+    capabilities: {
+      intro:
+        'Machine learning and generative AI each have a narrow, checkable job. Results below come from synthetic data generated by the same tool that planted the patterns, so they show the code works as designed, not accuracy on real accounts.',
+      items: [
+        {
+          id: 'cap-forecast',
+          title: 'Time-series forecasting',
+          description:
+            'Backtested model choice per series with intervals. Boosted trees and ridge are used where they win the backtest. XGBoost, PyTorch and Transformers are not used.',
+          status: 'implemented',
+        },
+        {
+          id: 'cap-anomaly',
+          title: 'Anomaly detection',
+          description:
+            'Statistical evidence thresholds calibrated on a no-change process, not on the planted cases.',
+          status: 'implemented',
+        },
+        {
+          id: 'cap-nlp',
+          title: 'Grounded NLP and RAG',
+          description:
+            'Tool-calling over analytics plus retrieval from a small glossary and guidelines base, with sanitised, length-capped passages treated as data.',
+          status: 'implemented',
+        },
+        {
+          id: 'cap-faith',
+          title: 'Faithfulness validation',
+          description:
+            'Numbers in an answer must match tool results. It does not judge meaning, so a wrongly worded answer with correct numbers can pass.',
+          status: 'implemented',
+        },
+        {
+          id: 'cap-orchestration',
+          title: 'Agent orchestration',
+          description:
+            'A LangGraph graph with typed state and per-run budgets. The checkpointer is deferred to the approval work in M6.',
+          status: 'prototype',
+        },
+        {
+          id: 'cap-keyword-class',
+          title: 'Keyword performance classification',
+          description:
+            'Rule-based findings exist today. A learned classifier is not built.',
+          status: 'planned',
+        },
+      ],
+    },
+    integration: {
+      intro:
+        'All business logic depends on an AdvertisingDataProvider port, never on a specific source, so the data source can be swapped by configuration.',
+      items: [
+        {
+          id: 'int-mock',
+          title: 'Phase 1: mock advertising data',
+          description:
+            'A seeded generator produces campaigns, keywords, search terms and daily history with planted scenarios. Every record carries its source and a MOCK label.',
+          status: 'implemented',
+        },
+        {
+          id: 'int-port',
+          title: 'Provider port and contract tests',
+          description:
+            'MockAdvertisingDataProvider satisfies the port. The mock provider refuses to execute changes.',
+          status: 'implemented',
+        },
+        {
+          id: 'int-amazon',
+          title: 'Phase 2: Amazon Ads API',
+          description:
+            'AmazonAdsApiProvider, OAuth, profile and campaign sync, and report ingestion. No Amazon connection exists or is simulated, and access has not been granted.',
+          status: 'future',
+        },
+      ],
+    },
+    safety: {
+      intro:
+        'Agents have read-only tools and cannot write. The aim is that a language model never changes a campaign.',
+      items: [
+        {
+          id: 'safe-exec',
+          title: 'Execution disabled by default',
+          description:
+            'AD_EXECUTION_ENABLED is false, and startup refuses an unsafe combination. No execution path exists yet.',
+          status: 'implemented',
+        },
+        {
+          id: 'safe-tenant',
+          title: 'Tenant isolation',
+          description:
+            'Every query is tenant-scoped, backed by Postgres row-level security and cross-tenant tests. Real sign-in is not built: a development-only header stands in, and production refuses to start with it.',
+          status: 'implemented',
+        },
+        {
+          id: 'safe-limits',
+          title: 'Rate limits and cost caps',
+          description:
+            'API rate limiting, daily and monthly LLM spend caps, and prompt-injection controls on retrieved text.',
+          status: 'implemented',
+        },
+        {
+          id: 'safe-approval',
+          title: 'Human approval and audit trail',
+          description:
+            'Recommendations are meant to be stored as pending, approved by an authorised person against a content hash, and logged append-only before anything runs.',
+          status: 'planned',
+        },
+        {
+          id: 'safe-oauth',
+          title: 'OAuth and secure credential storage',
+          description:
+            'Encrypted refresh tokens and a managed auth provider, planned alongside the Ads API.',
+          status: 'future',
+        },
+      ],
+    },
+    roadmap: {
+      intro: 'Milestones are approved one at a time. Status is taken from the repository’s own plan.',
+      items: [
+        { id: 'm0-m1', title: 'M0 to M1: planning and foundation', description: 'Docs, architecture decisions, backend and frontend scaffolds, CI, Docker Compose, tenancy.', status: 'implemented' },
+        { id: 'm2', title: 'M2: mock advertising data', description: 'Provider port, mock provider, seeded generator, sync job.', status: 'implemented' },
+        { id: 'm3', title: 'M3: analytics and ML', description: 'KPI engine, findings, anomalies, forecasting, dashboard. Some accuracy checks failed and are recorded.', status: 'implemented' },
+        { id: 'm4', title: 'M4: grounded assistant with RAG', description: 'LLM port, tools, knowledge base, faithfulness validator, chat API and UI.', status: 'implemented' },
+        { id: 'm5', title: 'M5: multi-agent system', description: 'Graph, specialists, validator and reporting are built. The routing check failed and the graph does not yet beat the single assistant.', status: 'prototype' },
+        { id: 'm6', title: 'M6: recommendations and approval', description: 'Bid, budget and negative-keyword proposals, approval workflow, audit log, gated execution.', status: 'planned' },
+        { id: 'm7-m8', title: 'M7 to M8: evaluation and deployment', description: 'Wider testing and a hosted deployment. No hosted demo exists.', status: 'planned' },
+        { id: 'm9', title: 'M9: Amazon Ads API', description: 'Starts only after access is granted.', status: 'future' },
+      ],
+    },
+    architecture: [
+      { id: 'ui', name: 'React dashboard and chat', description: 'Dashboard, trends and the assistant.', status: 'implemented' },
+      { id: 'api', name: 'FastAPI layer', description: 'Tenant-scoped read-only API, errors, rate limits.', status: 'implemented' },
+      { id: 'agents', name: 'LangGraph agent graph', description: 'Supervisor, specialists and validator, off by default.', status: 'prototype' },
+      { id: 'analytics', name: 'Analytics and ML', description: 'KPI engine, findings, anomalies and forecasts in plain Python.', status: 'implemented' },
+      { id: 'provider', name: 'AdvertisingDataProvider port', description: 'Mock provider today. Amazon provider not built.', status: 'implemented' },
+      { id: 'store', name: 'PostgreSQL with pgvector', description: 'Row-level security, migrations and the knowledge base.', status: 'implemented' },
+      { id: 'approvals', name: 'Approval and execution service', description: 'Not built. Execution is disabled.', status: 'planned' },
+    ],
+    statusLabels: { prototype: 'In Progress' },
+    statusNotes: {
+      implemented:
+        'Built and covered by automated tests in the repository. Everything runs on mock data, and some accuracy checks failed and are recorded.',
+      prototype:
+        'Partly built and under development. It runs, but has not met its own pre-registered checks or is switched off by default.',
+      planned: 'Designed in the repository’s documents but not built yet.',
+      future: 'Depends on something outside the project, such as Amazon Ads API access.',
+    },
+    limitations: [
+      'All data is synthetic and labelled MOCK. No Amazon account or Amazon Ads API is connected.',
+      'Accuracy results come from the same generator that planted the patterns, so they do not show accuracy on real accounts.',
+      'Pre-registered checks that failed: keyword waste precision (0.67 against 0.85), negative-term recall (0.64 against 0.70), account forecasts against a seasonal-naive baseline (6 of 10 against 7), and the agent graph routing check.',
+      'The multi-agent graph is off by default and has not been shown to beat the single assistant.',
+      'No recommendations, approvals or campaign changes exist, and there is no real authentication.',
+      'Query timing and the Docker Compose stack have not been verified, and no public demo is available.',
+    ],
+    outcomes: [
+      'Built a provider-independent backend where deterministic code does all arithmetic and a validator checks the numbers in model answers against retrieved evidence.',
+      'Pre-registered evaluation criteria before scoring, used held-out seeds, and published failed checks instead of tuning them away.',
+      'Designed tenant isolation, cost caps and fail-safe execution settings from the first migration, and recorded the decisions as architecture decision records.',
+      'Learned where a multi-agent graph does not yet add value over a single grounded assistant, and recorded that result.',
+      'No performance, savings or business-impact figures are claimed.',
+    ],
+    repoUrl: 'https://github.com/rishabhrathod12/AI-Ads-Autopilot',
+    lastReviewed: '2026-11-03',
+  },
+  {
     id: 'travelmate-ai',
     name: 'TravelMate AI',
     tagline: 'An agentic AI travel planner, built to be testable and honest about its data.',

@@ -11,7 +11,7 @@ function renderProjects() {
   )
 }
 
-const project = projects[0]!
+const project = projects.find((item) => item.id === 'travelmate-ai')!
 
 describe('Projects section (cards only)', () => {
   it('has the Featured Projects heading and one card per project', () => {
