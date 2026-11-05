@@ -194,4 +194,9 @@ export interface Project {
 export interface ContactInfo {
   heading: string
   message: string
+  email: string
+  /** Display format, for example "+91 81093 32360". */
+  phone: string
+  /** Digits with country code, used for the tel: link. */
+  phoneHref: string
 }

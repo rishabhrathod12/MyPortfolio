@@ -27,5 +27,8 @@ export const socialLinks: readonly SocialLink[] = [
 export const contact: ContactInfo = {
   heading: 'Get in touch',
   message:
-    'I am open to conversations about AI engineering roles and projects. The best way to reach me is a message on LinkedIn; my code and project history are on GitHub.',
+    'I am open to conversations about AI engineering roles and projects. You can email or call me directly, or message me on LinkedIn; my code and project history are on GitHub.',
+  email: 'rishabhrathod12@gmail.com',
+  phone: '+91 81093 32360',
+  phoneHref: '+918109332360',
 }
