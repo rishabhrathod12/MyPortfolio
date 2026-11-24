@@ -1,4 +1,4 @@
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Download } from 'lucide-react'
 import * as m from 'motion/react-m'
 import { SocialIcon } from '@/components/icons/SocialIcon'
 import { Button } from '@/components/ui/Button'
@@ -39,6 +39,15 @@ export function Hero() {
             </Button>
             <Button href="#contact" variant="secondary">
               Contact Me
+            </Button>
+            <Button
+              href="/Rishabh-Rathod-Resume.pdf"
+              variant="secondary"
+              download="Rishabh-Rathod-Resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Download size={16} aria-hidden="true" /> Download Resume
             </Button>
           </div>
           <ul className="mt-8 flex items-center gap-5">

@@ -153,7 +153,7 @@ test.describe('links and content', () => {
         expect(link.target).toBe('_blank')
         expect(link.rel).toContain('noopener')
       } else {
-        expect(link.href).toMatch(/^(#\S+|\/projects\/[a-z0-9-]+|mailto:\S+@\S+|tel:\+\d+)$/)
+        expect(link.href).toMatch(/^(#\S+|\/projects\/[a-z0-9-]+|mailto:\S+@\S+|tel:\+\d+|\/Rishabh-Rathod-Resume\.pdf)$/)
         if (link.href.startsWith('#')) {
           await expect(page.locator(link.href === '#top' ? 'section#top' : link.href)).toHaveCount(1)
         }

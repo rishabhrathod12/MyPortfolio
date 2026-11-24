@@ -68,6 +68,16 @@ describe('Hero', () => {
     )
   })
 
+  it('offers the resume as a download that opens safely in a new tab', () => {
+    render(<App />)
+    const hero = screen.getByRole('region', { name: 'Introduction' })
+    const link = within(hero).getByRole('link', { name: /Download Resume/ })
+    expect(link).toHaveAttribute('href', '/Rishabh-Rathod-Resume.pdf')
+    expect(link).toHaveAttribute('download')
+    expect(link).toHaveAttribute('target', '_blank')
+    expect(link.getAttribute('rel')).toContain('noopener')
+  })
+
   it('links to GitHub and LinkedIn in a new tab safely', () => {
     render(<App />)
     const hero = screen.getByRole('region', { name: 'Introduction' })
@@ -166,7 +176,7 @@ describe('content sections', () => {
   it('has no empty links', () => {
     const { container } = render(<App />)
     for (const anchor of container.querySelectorAll('a')) {
-      expect(anchor.getAttribute('href')).toMatch(/^(#\S+|\/projects\/\S+|https:\/\/\S+|mailto:\S+@\S+|tel:\+\d+)$/)
+      expect(anchor.getAttribute('href')).toMatch(/^(#\S+|\/projects\/\S+|https:\/\/\S+|mailto:\S+@\S+|tel:\+\d+|\/Rishabh-Rathod-Resume\.pdf)$/)
     }
   })
 })
