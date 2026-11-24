@@ -15,3 +15,4 @@ playwright-report
 # Original uploads used to make site assets; the cropped, metadata-free versions live in src/assets
 /my_picture*
 /skills_design*
+/apex_zip.zip
