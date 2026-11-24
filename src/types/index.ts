@@ -200,3 +200,20 @@ export interface ContactInfo {
   /** Digits with country code, used for the tel: link. */
   phoneHref: string
 }
+
+export interface CareerRole {
+  id: string
+  title: string
+  dates: DateRange
+  /** True for the role held today. */
+  current?: boolean
+  responsibilities: readonly string[]
+  technologies: readonly string[]
+}
+
+/** One employer with the roles held there, newest first. */
+export interface CareerCompany {
+  id: string
+  company: string
+  roles: readonly CareerRole[]
+}

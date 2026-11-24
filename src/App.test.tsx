@@ -7,6 +7,7 @@ import { experience } from '@/data/experience'
 import { focus } from '@/data/focus'
 import { navItems } from '@/data/nav'
 import { projects } from '@/data/projects'
+import { vortexia } from '@/data/vortexia'
 
 const project = projects.find((item) => item.id === 'travelmate-ai')!
 
@@ -113,7 +114,25 @@ describe('content sections', () => {
       expect(within(section).getByText(entry.dates.display)).toBeInTheDocument()
       expect(within(section).getByText(entry.summary)).toBeInTheDocument()
     }
-    expect(within(section).queryAllByRole('listitem')).toHaveLength(experience.length)
+    expect(
+      within(within(section).getByRole('list', { name: 'Business experience' })).getAllByRole('listitem'),
+    ).toHaveLength(experience.length)
+  })
+
+  it('presents the Vortexia Solution career progression, newest role first', () => {
+    render(<App />)
+    const section = screen.getByRole('region', { name: 'Professional Experience' })
+    expect(within(section).getByRole('heading', { name: 'Vortexia Solution LLP' })).toBeInTheDocument()
+    const roles = within(section).getAllByRole('heading', { level: 4 })
+    expect(roles.map((h) => h.textContent)).toEqual(['AI/ML Engineer', 'Associate AI/ML Engineer'])
+    expect(within(section).getByText('March 2026 – Present')).toBeInTheDocument()
+    expect(within(section).getByText('September 2023 – February 2026')).toBeInTheDocument()
+    expect(within(section).getByText('Promoted from Associate AI/ML Engineer')).toBeInTheDocument()
+    for (const role of vortexia.roles) {
+      for (const item of role.responsibilities) {
+        expect(within(section).getByText(item)).toBeInTheDocument()
+      }
+    }
   })
 
   it('renders the education entry', () => {
@@ -126,7 +145,7 @@ describe('content sections', () => {
     }
   })
 
-  it('renders contact links to GitHub and LinkedIn and no email link', () => {
+  it('renders email, phone, GitHub and LinkedIn contact links', () => {
     render(<App />)
     const section = screen.getByRole('region', { name: contact.heading })
     for (const link of socialLinks) {
@@ -134,13 +153,20 @@ describe('content sections', () => {
         within(section).getByRole('link', { name: `${link.label} (opens in a new tab)` }),
       ).toHaveAttribute('href', link.href)
     }
-    expect(section.querySelector('a[href^="mailto:"]')).toBeNull()
+    expect(within(section).getByRole('link', { name: contact.email })).toHaveAttribute(
+      'href',
+      `mailto:${contact.email}`,
+    )
+    expect(within(section).getByRole('link', { name: contact.phone })).toHaveAttribute(
+      'href',
+      `tel:${contact.phoneHref}`,
+    )
   })
 
   it('has no empty links', () => {
     const { container } = render(<App />)
     for (const anchor of container.querySelectorAll('a')) {
-      expect(anchor.getAttribute('href')).toMatch(/^(#\S+|\/projects\/\S+|https:\/\/\S+)$/)
+      expect(anchor.getAttribute('href')).toMatch(/^(#\S+|\/projects\/\S+|https:\/\/\S+|mailto:\S+@\S+|tel:\+\d+)$/)
     }
   })
 })

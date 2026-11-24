@@ -5,12 +5,14 @@ import { focus } from './focus'
 import { navItems } from './nav'
 import { projects } from './projects'
 import { skills } from './skills'
+import { vortexia } from './vortexia'
 
 const allText = JSON.stringify({
   profile,
   contact,
   skills,
   experience,
+  vortexia,
   education,
   focus,
   projects,
@@ -44,9 +46,10 @@ describe('profile', () => {
     expect(profile.location).toBe('India')
   })
 
-  it('does not publish an email address', () => {
-    expect(allText).not.toMatch(/[\w.+-]+@[\w-]+\.[\w.]+/)
-    expect(allText).not.toMatch(/mailto:/i)
+  it('publishes the email address only as the contact email', () => {
+    const withoutContact = JSON.stringify({ profile, skills, experience, vortexia, education, focus, projects })
+    expect(withoutContact).not.toMatch(/[\w.+-]+@[\w-]+\.[\w.]+/)
+    expect(contact.email).toMatch(/^[\w.+-]+@[\w-]+\.[\w.]+$/)
   })
 
   it('lists exactly the approved skills, in order, with no duplicates', () => {
