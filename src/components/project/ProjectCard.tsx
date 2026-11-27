@@ -45,6 +45,7 @@ export function ProjectCard({ project }: { project: Project }) {
           >
             View Details <ArrowRight size={16} aria-hidden="true" />
           </Button>
+          {project.repoUrl && (
           <Button
             href={project.repoUrl}
             variant="secondary"
@@ -55,6 +56,7 @@ export function ProjectCard({ project }: { project: Project }) {
             <GitHubIcon className="h-4 w-4" />
             GitHub
           </Button>
+          )}
         </div>
       </div>
     </article>

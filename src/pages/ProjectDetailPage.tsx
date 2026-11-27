@@ -112,15 +112,17 @@ export function ProjectDetailPage({ project }: { project: Project }) {
                 {project.currentState}
               </p>
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                <Button
-                  href={project.repoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${project.name} on GitHub (opens in a new tab)`}
-                >
-                  <GitHubIcon className="h-4 w-4" />
-                  View on GitHub
-                </Button>
+                {project.repoUrl && (
+                  <Button
+                    href={project.repoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${project.name} on GitHub (opens in a new tab)`}
+                  >
+                    <GitHubIcon className="h-4 w-4" />
+                    View on GitHub
+                  </Button>
+                )}
                 {project.demoUrl && (
                   <Button
                     href={project.demoUrl}
@@ -330,6 +332,7 @@ export function ProjectDetailPage({ project }: { project: Project }) {
           </DetailSection>
         )}
 
+        {project.repoUrl && (
         <DetailSection id="repository" title="GitHub Repository">
           <GlassCard className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-slate-300">
@@ -346,6 +349,7 @@ export function ProjectDetailPage({ project }: { project: Project }) {
             </Button>
           </GlassCard>
         </DetailSection>
+        )}
       </Container>
     </article>
   )

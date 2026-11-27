@@ -942,4 +942,160 @@ export const projects: readonly Project[] = [
       'No usage, accuracy or business-impact figures are claimed.',
     ],
   },
+  {
+    id: 'supportx-ai',
+    name: 'SupportX AI – Autonomous Multi-Agent Customer Support System',
+    tagline:
+      'A LangGraph multi-agent customer support system with ML intent classification, a FAISS-based RAG pipeline and approval-gated sensitive actions.',
+    shortDescription:
+      'An autonomous multi-agent customer support system built with LangGraph, with ML intent classification, RAG over FAISS, FastAPI services and human-in-the-loop approvals.',
+    highlights: ['Python', 'LangGraph', 'RAG', 'FAISS', 'FastAPI'],
+    coverAlt:
+      'SupportX AI architecture sketch: a customer query is classified by an intent model, routed by a Supervisor agent to retrieval and order services, with human approval before sensitive actions.',
+    categories: ['Agentic AI', 'Machine Learning', 'NLP', 'RAG'],
+    overview:
+      'SupportX AI is an autonomous multi-agent customer support system built with LangGraph. A supervisor coordinates tasks, retries failed steps, escalates when needed and asks a person to approve sensitive operations. An ML intent classifier (TF-IDF and Logistic Regression) categorises each customer query, and a Retrieval-Augmented Generation pipeline over a FAISS index supports context-aware responses.',
+    problem:
+      'Customer support teams handle a steady stream of order, shipment, refund and cancellation requests. Some can be answered automatically, but others change customer data or money and should not run without oversight. This project combines automation with controls: classification and retrieval to understand and answer queries, and approvals, roles and audit logs around sensitive actions.',
+    currentState:
+      'Built as an AI/ML engineering project, as described on my resume. No public repository or live demo is linked from this site.',
+    features: [
+      {
+        id: 'supervisor',
+        title: 'Supervisor-based multi-agent orchestration',
+        description:
+          'A LangGraph supervisor coordinates tasks across agents, with automated retries, escalation and human-in-the-loop approval workflows.',
+        status: 'implemented',
+      },
+      {
+        id: 'intent',
+        title: 'ML intent classification',
+        description:
+          'Customer queries are understood and categorised with TF-IDF features and a Logistic Regression classifier.',
+        status: 'implemented',
+      },
+      {
+        id: 'rag',
+        title: 'RAG pipeline with FAISS',
+        description:
+          'Document indexing, semantic retrieval preparation and context-aware customer support responses using a FAISS index.',
+        status: 'implemented',
+      },
+      {
+        id: 'services',
+        title: 'FastAPI and SQL backend services',
+        description:
+          'REST APIs for order management, shipment tracking, refund processing, cancellation handling and ticket management.',
+        status: 'implemented',
+      },
+      {
+        id: 'controls',
+        title: 'Access control, auditing and approvals',
+        description:
+          'Persistent workflow management, role-based staff access, audit logging, request tracking, rate limiting and approval-based execution of sensitive customer operations.',
+        status: 'implemented',
+      },
+    ],
+    stack: [
+      { label: 'Language', items: ['Python'] },
+      { label: 'Machine learning and NLP', items: ['Machine Learning', 'NLP', 'Scikit-learn'] },
+      { label: 'Agents and retrieval', items: ['LangGraph', 'LangChain', 'RAG', 'FAISS'] },
+      { label: 'Backend and data', items: ['FastAPI', 'SQL'] },
+    ],
+    architecture: [
+      { id: 'intent', name: 'Intent classifier', description: 'TF-IDF and Logistic Regression categorise each query.', status: 'implemented' },
+      { id: 'graph', name: 'LangGraph supervisor', description: 'Orchestrates tasks, retries, escalation and approvals.', status: 'implemented' },
+      { id: 'rag', name: 'RAG retrieval layer', description: 'FAISS index over support documents.', status: 'implemented' },
+      { id: 'api', name: 'FastAPI services', description: 'Orders, shipments, refunds, cancellations and tickets backed by SQL.', status: 'implemented' },
+      { id: 'governance', name: 'Governance layer', description: 'Role-based access, audit logs, rate limiting and approval-based execution.', status: 'implemented' },
+    ],
+    statusNotes: {
+      implemented: 'Described as built in my resume.',
+      prototype: 'Not used for this project.',
+      planned: 'Not used for this project.',
+    },
+    limitations: [
+      'No public repository or live demo is linked, so none is claimed.',
+      'No accuracy, performance or business-impact figures are claimed.',
+    ],
+    lastReviewed: '2026-11-27',
+  },
+  {
+    id: 'self-evaluating-lesson-generator',
+    name: 'Self-Evaluating AI Lesson Content Generator – Agentic AI System',
+    tagline:
+      'A LangGraph system in which Generator, Evaluator and Improver agents create, score and refine educational content.',
+    shortDescription:
+      'An agentic AI system that generates educational content, evaluates it against seven criteria and iteratively improves it, with persistent memory and human-approved prompt refinement.',
+    highlights: ['Python', 'LangGraph', 'OpenAI API', 'Pydantic', 'SQLite'],
+    coverAlt:
+      'Self-Evaluating AI Lesson Content Generator workflow sketch: Generator, Evaluator and Improver agents connected by conditional routing with retries, and a SQLite memory store.',
+    categories: ['Agentic AI', 'Generative AI', 'LLMs'],
+    overview:
+      'An Agentic AI content generation system built with LangGraph that generates, evaluates and iteratively improves educational content. A Generator agent drafts the content, an Evaluator agent scores it against a seven-criteria framework, and an Improver agent refines it using the feedback. Conditional routing with retries repeats the cycle based on the evaluation.',
+    problem:
+      'Content written by a language model can contain errors or fall short of quality standards, and a single generation pass gives no check on either. This project adds an evaluation step and a feedback loop, and keeps changes to the prompts under human approval so improvements stay controlled and reliable.',
+    currentState:
+      'Built as an AI engineering project, as described on my resume: 509 offline tests pass, and live API execution and memory retrieval have been verified. No public repository or live demo is linked from this site.',
+    features: [
+      {
+        id: 'agents',
+        title: 'Generator, Evaluator and Improver agents',
+        description:
+          'A multi-agent architecture for automated content quality assessment and refinement.',
+        status: 'implemented',
+      },
+      {
+        id: 'criteria',
+        title: 'Seven-criteria evaluation framework',
+        description: 'Assesses the quality of generated content and identifies potential errors.',
+        status: 'implemented',
+      },
+      {
+        id: 'routing',
+        title: 'Conditional routing with retries',
+        description: 'Content is automatically improved based on evaluation feedback.',
+        status: 'implemented',
+      },
+      {
+        id: 'memory',
+        title: 'SQLite persistent memory',
+        description: 'Stores memory and rejection logs, and supports feedback-driven improvement.',
+        status: 'implemented',
+      },
+      {
+        id: 'prompt-approval',
+        title: 'Human-approved prompt refinement',
+        description: 'Prompt changes need human approval, keeping AI-driven improvements controlled.',
+        status: 'implemented',
+      },
+    ],
+    stack: [
+      { label: 'Language', items: ['Python'] },
+      { label: 'AI', items: ['Generative AI', 'LLMs', 'LangGraph', 'OpenAI API'] },
+      { label: 'Data and validation', items: ['Pydantic', 'SQLite'] },
+      { label: 'Testing', items: ['Pytest'] },
+    ],
+    architecture: [
+      { id: 'generator', name: 'Generator agent', description: 'Drafts the lesson content.', status: 'implemented' },
+      { id: 'evaluator', name: 'Evaluator agent', description: 'Scores the content against seven criteria.', status: 'implemented' },
+      { id: 'improver', name: 'Improver agent', description: 'Refines the content using evaluation feedback.', status: 'implemented' },
+      { id: 'router', name: 'Conditional router', description: 'LangGraph routing with retries.', status: 'implemented' },
+      { id: 'memory', name: 'SQLite memory', description: 'Persistent memory and rejection logging.', status: 'implemented' },
+    ],
+    statusNotes: {
+      implemented: 'Described as built in my resume.',
+      prototype: 'Not used for this project.',
+      planned: 'Not used for this project.',
+    },
+    limitations: [
+      'No public repository or live demo is linked, so none is claimed.',
+      'The 509 passing tests run offline; live API execution and memory retrieval were verified separately.',
+    ],
+    outcomes: [
+      '509 offline tests passed.',
+      'Live API execution and memory retrieval verified.',
+    ],
+    lastReviewed: '2026-11-27',
+  },
 ]

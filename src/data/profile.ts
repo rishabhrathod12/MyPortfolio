@@ -2,10 +2,10 @@ import type { ContactInfo, Profile, SocialLink } from '@/types'
 
 export const profile: Profile = {
   name: 'Rishabh Rathod',
-  title: 'AI Engineer | Generative AI | Agentic AI | Machine Learning | Deep Learning',
+  title: 'AI Engineer | Generative AI | LLMs | RAG | Agentic AI | Machine Learning | Deep Learning',
   location: 'India',
   heroIntro:
-    'I build intelligent applications with Generative AI, large language models and AI agents, turning AI concepts into practical software.',
+    'I am an AI/ML Engineer with 3+ years of experience building intelligent applications using Machine Learning, Deep Learning, Generative AI, Large Language Models, RAG, and Agentic AI. Alongside my technical career, I bring 4+ years of business and entrepreneurship experience, helping me understand real-world business problems and build practical, business-focused AI solutions.',
   photoAlt: 'Portrait of Rishabh Rathod',
   aboutParagraphs: [
     'I am an AI Engineer focused on building intelligent applications using Generative AI, Large Language Models, and Agentic AI.',
@@ -32,3 +32,22 @@ export const contact: ContactInfo = {
   phone: '+91 81093 32360',
   phoneHref: '+918109332360',
 }
+
+export const experienceHighlights: readonly { value: string; label: string }[] = [
+  { value: '3+ Years', label: 'AI/ML Engineering Experience' },
+  { value: '4+ Years', label: 'Business & Entrepreneurship Experience' },
+]
+
+export const heroSkills: readonly string[] = [
+  'Machine Learning',
+  'Deep Learning',
+  'Python',
+  'NLP',
+  'Generative AI',
+  'LLMs',
+  'RAG',
+  'Agentic AI',
+  'LangChain / LangGraph',
+  'Vector Databases',
+  'SQL',
+]

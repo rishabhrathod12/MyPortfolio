@@ -170,7 +170,8 @@ export interface Project {
   projectStatus?: string
   /** Things that are deliberately not claimed. */
   limitations: readonly string[]
-  repoUrl: string
+  /** Only set when a public repository really exists. */
+  repoUrl?: string
   /** Only set when a live demo really exists. */
   demoUrl?: string
   /** ISO date the repository was last compared against this description. */

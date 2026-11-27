@@ -173,6 +173,31 @@ describe('projects data', () => {
     })
   })
 
+  describe('resume projects', () => {
+    it('lists exactly five unique projects, with the original three first', () => {
+      expect(projects.map((project) => project.id)).toEqual([
+        'adpilot-ai',
+        'travelmate-ai',
+        'apex-knowledge-assistant',
+        'supportx-ai',
+        'self-evaluating-lesson-generator',
+      ])
+    })
+
+    it('has no invented repository or demo links for SupportX AI and the lesson generator', () => {
+      for (const id of ['supportx-ai', 'self-evaluating-lesson-generator']) {
+        const project = projects.find((item) => item.id === id)
+        expect(project?.repoUrl).toBeUndefined()
+        expect(project?.demoUrl).toBeUndefined()
+      }
+    })
+
+    it('keeps the 509 offline tests claim on the lesson generator', () => {
+      const lesson = projects.find((item) => item.id === 'self-evaluating-lesson-generator')
+      expect(lesson?.outcomes?.join(' ')).toMatch(/509 offline tests/)
+    })
+  })
+
   it('does not overclaim a live model or live data in prose', () => {
     const prose = JSON.stringify(travelmate)
     expect(prose).not.toMatch(/production[- ]ready|deployed|live (bookings?|prices)/i)

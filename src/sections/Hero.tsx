@@ -1,9 +1,10 @@
-import { ArrowRight, Download } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import * as m from 'motion/react-m'
 import { SocialIcon } from '@/components/icons/SocialIcon'
 import { Button } from '@/components/ui/Button'
 import { Container } from '@/components/ui/Container'
-import { profile, socialLinks } from '@/data/profile'
+import { Badge } from '@/components/ui/Badge'
+import { experienceHighlights, heroSkills, profile, socialLinks } from '@/data/profile'
 
 export function Hero() {
   return (
@@ -30,24 +31,35 @@ export function Hero() {
             </span>
           </h1>
           <p className="mt-4 text-xl font-medium text-slate-200 sm:text-2xl">{profile.title}</p>
-          <p className="mt-6 max-w-2xl text-base leading-relaxed text-slate-400 sm:text-lg">
+          <p className="mt-5 max-w-2xl text-base leading-relaxed text-slate-400 sm:text-lg">
             {profile.heroIntro}
           </p>
+          <ul aria-label="Experience highlights" className="mt-6 grid gap-3 sm:grid-cols-2">
+            {experienceHighlights.map((item) => (
+              <li
+                key={item.value}
+                className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur"
+              >
+                <span className="bg-gradient-to-r from-accent-blue to-accent-cyan bg-clip-text text-2xl font-bold text-transparent">
+                  {item.value}
+                </span>
+                <span className="mt-0.5 block text-sm text-slate-300">{item.label}</span>
+              </li>
+            ))}
+          </ul>
+          <ul aria-label="Core technologies" className="mt-5 flex flex-wrap gap-2">
+            {heroSkills.map((skill) => (
+              <li key={skill}>
+                <Badge>{skill}</Badge>
+              </li>
+            ))}
+          </ul>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Button href="#projects">
               View Projects <ArrowRight size={16} aria-hidden="true" />
             </Button>
             <Button href="#contact" variant="secondary">
               Contact Me
-            </Button>
-            <Button
-              href="/Rishabh-Rathod-Resume.pdf"
-              variant="secondary"
-              download="Rishabh-Rathod-Resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Download size={16} aria-hidden="true" /> Download Resume
             </Button>
           </div>
           <ul className="mt-8 flex items-center gap-5">

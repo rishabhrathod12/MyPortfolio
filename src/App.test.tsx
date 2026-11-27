@@ -68,16 +68,6 @@ describe('Hero', () => {
     )
   })
 
-  it('offers the resume as a download that opens safely in a new tab', () => {
-    render(<App />)
-    const hero = screen.getByRole('region', { name: 'Introduction' })
-    const link = within(hero).getByRole('link', { name: /Download Resume/ })
-    expect(link).toHaveAttribute('href', '/Rishabh-Rathod-Resume.pdf')
-    expect(link).toHaveAttribute('download')
-    expect(link).toHaveAttribute('target', '_blank')
-    expect(link.getAttribute('rel')).toContain('noopener')
-  })
-
   it('links to GitHub and LinkedIn in a new tab safely', () => {
     render(<App />)
     const hero = screen.getByRole('region', { name: 'Introduction' })

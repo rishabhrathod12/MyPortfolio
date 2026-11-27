@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" font-family="Inter, Segoe UI, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0b1020"/><stop offset="1" stop-color="#111a35"/></linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3b82f6"/><stop offset="1" stop-color="#22d3ee"/></linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#bg)"/>
+  <circle cx="1040" cy="90" r="260" fill="#3b82f6" opacity="0.07"/>
+  <text x="64" y="104" fill="#22d3ee" font-size="20" letter-spacing="4" font-family="Consolas, monospace">AGENTIC AI · CUSTOMER SUPPORT</text>
+  <text x="64" y="176" fill="#ffffff" font-size="68" font-weight="700">SupportX AI</text>
+  <text x="64" y="222" fill="#cbd5e1" font-size="26">Autonomous multi-agent customer support</text>
+  <rect x="64" y="244" width="120" height="4" rx="2" fill="url(#accent)"/>
+  <g font-size="22" font-weight="600" text-anchor="middle" fill="#e2e8f0">
+    <rect x="64" y="330" width="220" height="80" rx="14" fill="#1e293b" stroke="#475569"/><text x="174" y="377">Customer query</text>
+    <rect x="344" y="330" width="240" height="80" rx="14" fill="#0f2a2a" stroke="#34d399" stroke-opacity="0.6"/><text x="464" y="377">Intent model</text>
+    <rect x="644" y="330" width="240" height="80" rx="14" fill="#1e293b" stroke="url(#accent)" stroke-width="2"/><text x="764" y="377">Supervisor</text>
+    <rect x="944" y="270" width="200" height="70" rx="14" fill="#0f2a2a" stroke="#34d399" stroke-opacity="0.6"/><text x="1044" y="314">RAG · FAISS</text>
+    <rect x="944" y="400" width="200" height="70" rx="14" fill="#0f2a2a" stroke="#34d399" stroke-opacity="0.6"/><text x="1044" y="444">FastAPI · SQL</text>
+    <rect x="604" y="520" width="320" height="64" rx="14" fill="none" stroke="#64748b" stroke-dasharray="6 6"/><text x="764" y="560" fill="#94a3b8">Human approval</text>
+  </g>
+  <g stroke="#475569" stroke-width="2" fill="none"><path d="M284 370 H344"/><path d="M584 370 H644"/><path d="M884 370 H914 V305 H944"/><path d="M884 370 H914 V435 H944"/><path d="M764 410 V520"/></g>
+</svg>

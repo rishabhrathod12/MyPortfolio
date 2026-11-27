@@ -41,7 +41,7 @@ describe('profile', () => {
   it('has the agreed identity', () => {
     expect(profile.name).toBe('Rishabh Rathod')
     expect(profile.title).toBe(
-      'AI Engineer | Generative AI | Agentic AI | Machine Learning | Deep Learning',
+      'AI Engineer | Generative AI | LLMs | RAG | Agentic AI | Machine Learning | Deep Learning',
     )
     expect(profile.location).toBe('India')
   })
