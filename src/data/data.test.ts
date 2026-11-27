@@ -126,7 +126,7 @@ describe('honest background', () => {
   it('keeps the About text as specified and the Amazon business out of it', () => {
     expect(profile.aboutParagraphs).toHaveLength(4)
     expect(profile.aboutParagraphs[0]).toBe(
-      'I am an AI Engineer focused on building intelligent applications using Generative AI, Large Language Models, and Agentic AI.',
+      'I am an AI Engineer with 3+ years of experience building intelligent applications using Machine Learning, Generative AI, Large Language Models, RAG, and Agentic AI.',
     )
     expect(profile.aboutParagraphs.join(' ')).not.toMatch(/amazon|seller|e-commerce/i)
   })

@@ -1,4 +1,4 @@
-import { Briefcase, MapPin, Sparkles } from 'lucide-react'
+import { Briefcase, Clock, MapPin, Sparkles } from 'lucide-react'
 import type { ReactNode } from 'react'
 import profilePhoto from '@/assets/profile.jpg'
 import { GlassCard } from '@/components/ui/GlassCard'
@@ -44,12 +44,17 @@ export function About() {
               <Fact
                 icon={<Sparkles size={16} aria-hidden="true" />}
                 label="Focus"
-                value="Generative AI and agentic AI"
+                value="Generative AI, LLMs, RAG and agentic AI"
+              />
+              <Fact
+                icon={<Clock size={16} aria-hidden="true" />}
+                label="Experience"
+                value="3+ years in AI/ML engineering"
               />
               <Fact
                 icon={<Briefcase size={16} aria-hidden="true" />}
                 label="Background"
-                value="Entrepreneurship"
+                value="4+ years in business and entrepreneurship"
               />
             </ul>
           </GlassCard>

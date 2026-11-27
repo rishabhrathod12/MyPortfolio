@@ -8,10 +8,10 @@ export const profile: Profile = {
     'I am an AI/ML Engineer with 3+ years of experience building intelligent applications using Machine Learning, Deep Learning, Generative AI, Large Language Models, RAG, and Agentic AI. Alongside my technical career, I bring 4+ years of business and entrepreneurship experience, helping me understand real-world business problems and build practical, business-focused AI solutions.',
   photoAlt: 'Portrait of Rishabh Rathod',
   aboutParagraphs: [
-    'I am an AI Engineer focused on building intelligent applications using Generative AI, Large Language Models, and Agentic AI.',
+    'I am an AI Engineer with 3+ years of experience building intelligent applications using Machine Learning, Generative AI, Large Language Models, RAG, and Agentic AI.',
     'My technical interests include Python, Machine Learning, Deep Learning, LLM-powered applications, AI agents, and intelligent workflow automation.',
     'I enjoy turning AI concepts into practical applications, exploring new technologies, and solving real-world problems through software.',
-    'Alongside my technical journey, my experience in entrepreneurship has helped me develop problem-solving, analytical thinking, and business understanding.',
+    'Alongside my technical career, my 4+ years of business and entrepreneurship experience has helped me develop problem-solving, analytical thinking, and business understanding.',
   ],
 }
 
